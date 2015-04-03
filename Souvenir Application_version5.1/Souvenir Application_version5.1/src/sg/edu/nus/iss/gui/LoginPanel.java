@@ -8,6 +8,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JSplitPane;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
@@ -104,6 +105,8 @@ public class LoginPanel extends JFrame
 							mainMenu=new MainMenu(manager);
 							mainMenu.setUserName(uname);
 							mainMenu.pack();
+							mainMenu.setSize(new Dimension(1100,800));
+							mainMenu.setLocationRelativeTo(null);
 							mainMenu.setVisible(true);
 							dispose();
 						}
@@ -130,7 +133,10 @@ public class LoginPanel extends JFrame
 	}
 	public JFrame CreateChangePasswordFrame(){
 		changePasswordFrame = new JFrame();
+
 		changePasswordFrame.setVisible(true);
+//		changePasswordFrame.setLocation( (Screen.width - changePasswordFrame.WIDTH) / 2,
+//                (screenSize.height - frameSize.height) / 2);
 		changePasswordFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(4,4));

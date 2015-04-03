@@ -102,13 +102,11 @@ public class LoginUser
 	public boolean changePassword(String uname,String oldpwd, String newpwd)
 	{
 		boolean result=false;
-		LineNumberReader lnr=null;		
 		try
 		{
-			File f=new File("./data/Storekeepers.dat");
-			FileReader fr=new FileReader(f);
-			lnr=new LineNumberReader(fr);
-			while((line=lnr.readLine())!=null)
+			FileReader fr=new FileReader(Constants.STOREKEEPERSFILE);
+			BufferedReader br = new BufferedReader(fr);
+			while((line=br.readLine())!=null)
 			{
 				System.out.println(line);
 				String parts[]=line.split(",");
@@ -136,16 +134,21 @@ public class LoginUser
 				}
 
 			}
+			fr.close();
+
 		} 
 		catch (FileNotFoundException e)
 		{
 		  	e.printStackTrace();
 		}			
+
 		catch (IOException e) 
 		{
 			e.printStackTrace();
 		}
+		
 		return result;
+		
 	}
 	public void addUser(String uname, String rand) 
 	{

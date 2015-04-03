@@ -102,9 +102,9 @@ public class MainMenu extends JFrame implements ActionListener {
 		panel.setVisible(true);
 		
 				GridBagLayout gbl_panel = new GridBagLayout();
-				gbl_panel.columnWidths = new int[]{203, 124, 221, 249, 34, 0};
+				gbl_panel.columnWidths = new int[]{59, 89, 221, 249, 0};
 				gbl_panel.rowHeights = new int[]{35, 15, 29, 32, 32, 208, 50, 0, 0};
-				gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+				gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 				gbl_panel.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 				panel.setLayout(gbl_panel);
 				
@@ -123,6 +123,15 @@ public class MainMenu extends JFrame implements ActionListener {
 				    }  
 				}); 
 				
+				lblNewLabel_7 = new JLabel();
+				lblNewLabel_7.setFont(new Font("Times New Roman", Font.BOLD, 15));
+				GridBagConstraints gbc_lblNewLabel_7 = new GridBagConstraints();
+				gbc_lblNewLabel_7.anchor = GridBagConstraints.WEST;
+				gbc_lblNewLabel_7.insets = new Insets(0, 0, 5, 5);
+				gbc_lblNewLabel_7.gridx = 1;
+				gbc_lblNewLabel_7.gridy = 0;
+				panel.add(lblNewLabel_7, gbc_lblNewLabel_7);
+				
 				JButton btnNewButton = new JButton("Logout");
 				btnNewButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -135,37 +144,10 @@ public class MainMenu extends JFrame implements ActionListener {
 						}
 					}
 				});
-				
-				JLabel lblNewLabel = new JLabel("Storekeeper:");
-				lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD, 15));
-				GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-				gbc_lblNewLabel.fill = GridBagConstraints.VERTICAL;
-				gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-				gbc_lblNewLabel.gridx = 0;
-				gbc_lblNewLabel.gridy = 0;
-				panel.add(lblNewLabel, gbc_lblNewLabel);
-				
-				lblNewLabel_7 = new JLabel();
-				lblNewLabel_7.setFont(new Font("Times New Roman", Font.BOLD, 15));
-				GridBagConstraints gbc_lblNewLabel_7 = new GridBagConstraints();
-				gbc_lblNewLabel_7.anchor = GridBagConstraints.WEST;
-				gbc_lblNewLabel_7.insets = new Insets(0, 0, 5, 5);
-				gbc_lblNewLabel_7.gridx = 1;
-				gbc_lblNewLabel_7.gridy = 0;
-				panel.add(lblNewLabel_7, gbc_lblNewLabel_7);
-				
-
-
-				JLabel lblNewLabel_9 = new JLabel();
-				GridBagConstraints gbc_lblNewLabel_9 = new GridBagConstraints();
-				gbc_lblNewLabel_9.anchor = GridBagConstraints.WEST;
-				gbc_lblNewLabel_9.insets = new Insets(0, 0, 5, 5);
-				gbc_lblNewLabel_9.gridx = 3;
-				gbc_lblNewLabel_9.gridy = 0;
-				panel.add(lblNewLabel_9, gbc_lblNewLabel_9);
 				GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+				gbc_btnNewButton.anchor = GridBagConstraints.EAST;
 				gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
-				gbc_btnNewButton.gridx = 4;
+				gbc_btnNewButton.gridx = 3;
 				gbc_btnNewButton.gridy = 0;
 				panel.add(btnNewButton, gbc_btnNewButton);
 				
@@ -217,7 +199,7 @@ public class MainMenu extends JFrame implements ActionListener {
 				    }  
 				}); 
 				GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
-				gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
+				gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 0);
 				gbc_lblNewLabel_3.gridx = 3;
 				gbc_lblNewLabel_3.gridy = 2;
 				panel.add(lblNewLabel_3, gbc_lblNewLabel_3);
@@ -274,7 +256,7 @@ public class MainMenu extends JFrame implements ActionListener {
 		    }  
 		}); 
 		GridBagConstraints gbc_lblNewLabel_6 = new GridBagConstraints();
-		gbc_lblNewLabel_6.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_6.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNewLabel_6.gridx = 3;
 		gbc_lblNewLabel_6.gridy = 5;
 		panel.add(lblNewLabel_6, gbc_lblNewLabel_6);
@@ -356,7 +338,7 @@ public class MainMenu extends JFrame implements ActionListener {
 
     
     public void setUserName(String uname){
-    	lblNewLabel_7.setText(uname);
+    	lblNewLabel_7.setText("Storekeeper: "+uname);
     	
     }
 

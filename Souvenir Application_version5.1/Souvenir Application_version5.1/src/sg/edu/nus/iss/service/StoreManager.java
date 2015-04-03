@@ -1,5 +1,7 @@
 package sg.edu.nus.iss.service;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.IOException;
 
 import sg.edu.nus.iss.gui.MainMenu;
@@ -16,7 +18,14 @@ public class StoreManager {
 		
 		
 		mainPanel = new LoginPanel(this);
+
+		mainPanel.setLocationRelativeTo(null);
 		mainPanel.pack();
+		int width=mainPanel.getWidth();
+		int height=mainPanel.getHeight();
+		int w = (Toolkit.getDefaultToolkit().getScreenSize().width - width) / 2;
+		int h = (Toolkit.getDefaultToolkit().getScreenSize().height - height) / 2;
+		mainPanel.setLocation(w, h);
 		mainPanel.setVisible (true);	
 	}
 	
