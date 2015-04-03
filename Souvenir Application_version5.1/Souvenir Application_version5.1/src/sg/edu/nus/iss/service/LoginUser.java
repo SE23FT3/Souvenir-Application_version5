@@ -111,21 +111,24 @@ public class LoginUser
 			while((line=lnr.readLine())!=null)
 			{
 				System.out.println(line);
-				if(line.contains(uname))
+				String parts[]=line.split(",");
+				String part1=parts[0];
+				String part2=parts[1];
+				if(part1.equalsIgnoreCase(uname))
 					{
-						String parts[]=line.split(",");
-						//String part1=parts[0];
-						String part2=parts[1];
-						if(part2==oldpwd){
+						if(part2.equals(oldpwd)){
+							if(newpwd.length()!=0){
 							FileWriter fw=new FileWriter("./data/Storekeepers.dat");
 							fw.write(line.replace(part2, newpwd));
 							fw.close();
 							JOptionPane.showMessageDialog(null, "Change password successfully!");
-							result = true;
+							result = true;}
+							else{
+								JOptionPane.showMessageDialog(null, "New password can not be empty!");
+							}
 						}
 						else{
 							JOptionPane.showMessageDialog(null, "Old password is wrong!");
-
 						}			
 					}
 				else{
