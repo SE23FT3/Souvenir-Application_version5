@@ -18,6 +18,7 @@ import java.util.List;
 import sg.edu.nus.iss.gui.CategoryPanel;
 import sg.edu.nus.iss.gui.MainMenu;
 import sg.edu.nus.iss.gui.ProductPanel;
+import sg.edu.nus.iss.models.Discount;
 import sg.edu.nus.iss.models.Member;
 import sg.edu.nus.iss.models.Product;
 import sg.edu.nus.iss.models.Category;
@@ -55,18 +56,7 @@ public class CategoryManager {
 		}
 		return ListCategory;
 	}
-	public boolean addCategory(String categoryCode, String categoryName)throws IOException {
-
-		boolean valid=false;
-		Category p = new Category(categoryCode,categoryName);
-		this.ListCategory().add(p);
-		FileWriter w = new FileWriter("./data/Category.dat",true);
-		PrintWriter pr = new PrintWriter(w);
-		pr.write("\r"+p.toString());
-		pr.close();
-		valid=true;
-		return valid;
-	}
+	
 	public void refresh() throws IOException {
 		mainMenu.refreshCategoryPanel();
 		mainMenu.displayCategoryPanel();
@@ -157,50 +147,45 @@ public List<Category> searchDataAndDisplay(String data, String value) {
 	return categoryList;
 	}
 
-	public ArrayList deleteCategoryData(Category category) throws IOException {
-		ArrayList<Category> categoryList=null;
-		if(category!=null)
+	public boolean writeBackToFile(ArrayList categoryList) throws IOException {
+
+		if(categoryList!=null)
 		{
-			categoryList=retrieveCategoryDataFromFile();
 		
-	  
-	             
-	      //  displayMemberFile(memberList);
 	        BufferedWriter bout = new BufferedWriter(new FileWriter(Constants.CATEGORYTFILE));
 	        Iterator<Category> iterator = categoryList.iterator();
 			while (iterator.hasNext()) {
 				
 				
 				Category cat=iterator.next();
-				if(cat.getCategoryCode().equalsIgnoreCase(category.getCategoryCode()))
-				{
-					System.out.println("Member has been removed successfully!!");
-					categoryList.remove(category);
-					break;
-				}
-				else
-				{
-					System.out.println("Data not found");
-					
-					
-				}
 				String line=cat.getCategoryCode()+","+cat.getCategoryName();
-				System.out.println(line);
-				try {
+					System.out.println(line);
 					bout.write(line);
 					bout.newLine();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
 				
 			}    
-			 System.out.println("After deletion:"+categoryList.size());
+			
 			bout.close();						
 		}
-		return categoryList;
+		return true;
 	}
 
-
+	public boolean addNewCategory(Category category) throws IOException {
+		if(category!=null)
+		{
+			
+			
+			String content=category.getCategoryCode()+","+category.getCategoryName();
+			System.out.println(content);
+		
+	        BufferedWriter bout = new BufferedWriter(new FileWriter(Constants.CATEGORYTFILE,true));
+	          
+	         bout.append(content);
+	         bout.newLine();
+	         bout.close();						
+		}
+		return true;
+		
+	}
+	
 }

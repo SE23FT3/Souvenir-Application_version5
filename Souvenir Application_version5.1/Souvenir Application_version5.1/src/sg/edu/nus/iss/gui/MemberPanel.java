@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
@@ -48,7 +49,7 @@ public class MemberPanel extends JPanel{
 		memberTable = new JTable();
         scrollPane = new JScrollPane(memberTable);
 	    tableModel=new DefaultTableModel(0,2);
-
+	    memberTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         setLayout (new BorderLayout());
     	add("North",createSearchPanel());
@@ -58,9 +59,12 @@ public class MemberPanel extends JPanel{
 
  
 	}
+	
 	private Component createSearchPanel() {
 
 		  JPanel panel = new JPanel (new GridLayout (1, 1));
+		
+		 
 		  		 final JComboBox searchCombo;
 		  		 final DefaultComboBoxModel fieldsName = new DefaultComboBoxModel();
 		  		JButton searchButton;
@@ -180,18 +184,40 @@ public class MemberPanel extends JPanel{
         deleteButton.addActionListener (new ActionListener () {
             public void actionPerformed (ActionEvent e) {
               int i= memberTable.getSelectedRow();
-            
-               System.out.println("Deleted:::"+i);
-               if(i>=0){
+            String memberId=(String)memberTable.getModel().getValueAt(i, 1);
+               System.out.println("Deleted:::"+i+"  memberId:"+memberId);
+               ArrayList newdiscountList=null;
                ArrayList memberList = null;
 			try {
 				memberList = customerManager.retrieveMemberDataFromFile();
-				 Member member=(Member) memberList.get(i);
+				 System.out.println("memberList before deleteion:::"+memberList.size());
+				Member removeMember=new Member();
+				 Iterator<Member> iterator = memberList.iterator();
+					while (iterator.hasNext()) {							
+						Member member=iterator.next();
+						if(member.getMemberId().equalsIgnoreCase(memberId))
+						{
+							
+							removeMember=member;
+							memberList.remove(removeMember);
+							break;
+						}
+						
+					}
+					 System.out.println("memberList afteer deleteion:::"+memberList.size());
+					System.out.println("member name delete::"+removeMember.getCustomerName());
+					boolean valid=customerManager.writeBackToFile(memberList);
+					if(valid)
+					{
+					System.out.println("newdiscountList::"+memberList.size());
 				// System.out.println("Deleted: dscount code::::::::"+d.getDiscountCode()+d.getApplicability());
-				 ArrayList  newdiscountList=customerManager.deleteMemberData(member);
-				
-				 System.out.println("newdiscountLis::"+newdiscountList.size());
-				 addComponeneTable(newdiscountList);
+				 
+				 addComponeneTable(memberList);
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null,"Deletion is not succesful.");
+					}
 				 
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
@@ -199,7 +225,7 @@ public class MemberPanel extends JPanel{
 			}
                }
    	       
-            }
+            
         });
        
         p.add (addButton);

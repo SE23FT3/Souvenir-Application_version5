@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
@@ -48,6 +49,7 @@ public class CategoryPanel extends JPanel {
 		scrollPane = new JScrollPane(categoryTable);
 		tableModel=new DefaultTableModel(0,2);
 		
+		categoryTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		setLayout(new BorderLayout());
 		add("North",createSearchPanel());
 		add("East",createButtonPanel());
@@ -192,29 +194,49 @@ public class CategoryPanel extends JPanel {
         JButton deleteButton = new JButton ("Delete");
         deleteButton.addActionListener (new ActionListener () {
             public void actionPerformed (ActionEvent e) {
-              int i= categoryTable.getSelectedRow();
-            
-               System.out.println("Deleted:::"+i);
-               if(i>=0){
-               ArrayList categoryList = null;
-			try {
-				categoryList = categoryManager.retrieveCategoryDataFromFile();
-				 Category category=(Category) categoryList.get(i);
-				 System.out.println("Deleted category code::"+category.getCategoryCode());
-				// System.out.println("Deleted: dscount code::::::::"+d.getDiscountCode()+d.getApplicability());
-				 ArrayList  newCategoryList=categoryManager.deleteCategoryData(category);
-				
-				 System.out.println("newCategoryList::"+newCategoryList.size());
-				 addComponeneTable(newCategoryList);
-				 
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-               }
-   	       
-            }
-        });
+                int i= categoryTable.getSelectedRow();
+              String categoryCode=(String)categoryTable.getModel().getValueAt(i, 0);
+                 System.out.println("Deleted:::"+i+"  categoryCode:"+categoryCode);
+                 ArrayList newdcategoryListt=null;
+                 ArrayList categoryList = null;
+  			try {
+  				categoryList = categoryManager.retrieveCategoryDataFromFile();
+  				 System.out.println("categoryList before deleteion:::"+categoryList.size());
+  				Category removeCategory=new Category();
+  				 Iterator<Category> iterator = categoryList.iterator();
+  					while (iterator.hasNext()) {							
+  						Category catgory=iterator.next();
+  						if(catgory.getCategoryCode().equalsIgnoreCase(categoryCode))
+  						{
+  							
+  							removeCategory=catgory;
+  							categoryList.remove(removeCategory);
+  							break;
+  						}
+  						
+  					}
+  					 
+  					boolean valid=categoryManager.writeBackToFile(categoryList);
+  					if(valid)
+  					{
+  					System.out.println("categoryList::"+categoryList.size());
+  				// System.out.println("Deleted: dscount code::::::::"+d.getDiscountCode()+d.getApplicability());
+  				 
+  				 addComponeneTable(categoryList);
+  					}
+  					else
+  					{
+  						JOptionPane.showMessageDialog(null,"Deletion is not succesful.");
+  					}
+  				 
+  			} catch (IOException e1) {
+  				// TODO Auto-generated catch block
+  				e1.printStackTrace();
+  			}
+                 }
+     	       
+              
+          });
        
         p.add (deleteButton);
         

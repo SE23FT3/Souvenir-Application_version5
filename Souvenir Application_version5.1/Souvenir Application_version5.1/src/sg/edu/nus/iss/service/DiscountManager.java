@@ -23,6 +23,7 @@ import sg.edu.nus.iss.gui.DiscountPanel;
 import sg.edu.nus.iss.gui.MainMenu;
 import sg.edu.nus.iss.gui.ProductPanel;
 import sg.edu.nus.iss.models.Discount;
+import sg.edu.nus.iss.models.Member;
 import sg.edu.nus.iss.util.Constants;
 
 public class DiscountManager implements Constants{
@@ -403,6 +404,30 @@ public class DiscountManager implements Constants{
 		  daysdiff = (int) diffDays;
 		 return daysdiff;
 		  }
+	public boolean writeBackToFile(ArrayList discountList) throws IOException {
+
+		if(discountList!=null)
+		{
+		
+	        BufferedWriter bout = new BufferedWriter(new FileWriter(Constants.DISCOUNTFILE));
+	        Iterator<Discount> iterator = discountList.iterator();
+			while (iterator.hasNext()) {
+				
+				
+				Discount dis=iterator.next();
+				
+				String line=dis.getDiscountCode()+","+dis.getDiscountDescription()+","+dis.getStartDate()+","+
+						dis.getDurationOfDiscount()+","+dis.getDiscountPercentage()+","+dis.getApplicability();
+					System.out.println(line);
+					bout.write(line);
+					bout.newLine();
+				
+			}    
+			
+			bout.close();						
+		}
+		return true;
+	}
 }
 
 	

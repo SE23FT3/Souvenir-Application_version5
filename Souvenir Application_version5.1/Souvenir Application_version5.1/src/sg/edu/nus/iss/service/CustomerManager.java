@@ -109,44 +109,29 @@ public boolean addNewMemberData(Member member) throws IOException {
 		}
 		return true;
 	}
-public ArrayList<Member> deleteMemberData(Member member) throws IOException
+public boolean writeBackToFile(ArrayList<Member> memberList) throws IOException
 {
-	ArrayList<Member> memberList=null;
-	if(member!=null)
-	{
-	 memberList=retrieveMemberDataFromFile();
 	
-  
-             
-      //  displayMemberFile(memberList);
+	if(memberList!=null)
+	{
+	
         BufferedWriter bout = new BufferedWriter(new FileWriter(Constants.MEMBERSFILE));
         Iterator<Member> iterator = memberList.iterator();
 		while (iterator.hasNext()) {
 			
 			
 			Member mem=iterator.next();
-			if(mem.getMemberId().equalsIgnoreCase(member.getMemberId()))
-			{
-				System.out.println("Member has been removed successfully!!");
-				memberList.remove(mem);
-				break;
-			}
-			else
-			{
-				System.out.println("Data not found");
-				
-				
-			}
+			
 			String line=mem.getCustomerName()+","+mem.getMemberId()+","+mem.getLoyaltyPoint();
 			System.out.println(line);
 			bout.write(line);
 			bout.newLine();
 			
 		}    
-		 System.out.println("After deletion:"+memberList.size());
+		
 		bout.close();						
 	}
-	return memberList;
+	return true;
 }
 
 public ArrayList<Member> searchDataAndDisplay(String data, String value) {

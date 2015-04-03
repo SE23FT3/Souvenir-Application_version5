@@ -23,12 +23,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 
 import sg.edu.nus.iss.main.StoreApplication;
 import sg.edu.nus.iss.models.Discount;
+import sg.edu.nus.iss.models.Member;
 import sg.edu.nus.iss.models.Product;
 import sg.edu.nus.iss.service.DiscountManager;
 
@@ -44,7 +46,7 @@ public class DiscountPanel extends JPanel {
 		discountTable = new JTable();
         scrollPane = new JScrollPane(discountTable);
 	    tableModel=new DefaultTableModel(0,2);
-
+	    discountTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setLayout (new BorderLayout());
         add("North",createSearchPanel());
     	add("East",createButtonPanel());
@@ -176,18 +178,46 @@ public class DiscountPanel extends JPanel {
         deleteButton.addActionListener (new ActionListener () {
             public void actionPerformed (ActionEvent e) {
               int i= discountTable.getSelectedRow();
-            
+              String discountCode=(String)discountTable.getModel().getValueAt(i, 0);
                System.out.println("Deleted:::"+i);
-              
+               System.out.println("Deleted:::"+i+"  discountCode:"+discountCode);
+               ArrayList newdiscountList=null;
+             
                ArrayList discountList = null;
 			try {
-				discountList = discountManager.getDiscountList();
-				 Discount d=(Discount) discountList.get(i);
-				 System.out.println("Deleted: dscount code::::::::"+d.getDiscountCode()+d.getApplicability());
-				 ArrayList  newdiscountList=discountManager.deleteDiscountData(d);
+				Discount removeDiscount=new Discount();
+				discountList = discountManager.retrieveDiscountDataFromFile();
+				Iterator<Discount> iterator = discountList.iterator();
+				while (iterator.hasNext()) {							
+					Discount discount=iterator.next();
+					if(discount.getDiscountCode().equalsIgnoreCase(discountCode))
+					{
+						
+						removeDiscount=discount;
+						discountList.remove(removeDiscount);
+						break;
+					}
+					
+				}
 				
-				 System.out.println("newdiscountLis::"+newdiscountList.size());
-				 addComponeneTable(newdiscountList);
+				boolean valid=discountManager.writeBackToFile(discountList);
+				if(valid)
+				{
+				System.out.println("newdiscountList::"+discountList.size());
+			// System.out.println("Deleted: dscount code::::::::"+d.getDiscountCode()+d.getApplicability());
+			 
+			 addComponeneTable(discountList);
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null,"Deletion is not successful.");
+				}
+//				 Discount d=(Discount) discountList.get(i);
+//				 System.out.println("Deleted: dscount code::::::::"+d.getDiscountCode()+d.getApplicability());
+//				 ArrayList  newdiscountList=discountManager.deleteDiscountData(d);
+//				
+//				 System.out.println("newdiscountLis::"+newdiscountList.size());
+//				 addComponeneTable(newdiscountList);
 				 
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
