@@ -102,6 +102,7 @@ public class BillingPanel extends JPanel{
 	double totalPriceofPurchasedItems=0.0;
 	double totalDiscountedPrice=0.0;
 	String discountPercentage=null;
+	protected String memberID;
 	public BillingPanel(final BillingManager billingManager) throws IOException{
 		this.billingManager = billingManager;
 		
@@ -164,6 +165,7 @@ public class BillingPanel extends JPanel{
     	txtCustomerField = new JTextField();
     	
     	txtCustomerField.setVisible(false);
+    	
     	txtCustomerField.addKeyListener(new KeyAdapter()
 
 	    {
@@ -175,21 +177,23 @@ public class BillingPanel extends JPanel{
 	        if (e.getKeyCode() == KeyEvent.VK_ENTER)
 
 	        {
-	        	 String memberID=txtCustomerField.getText();
+	        	  memberID=txtCustomerField.getText();
 	          System.out.println("ENTER key pressed memberID:"+memberID);
 	          
 	          
-			try {
+			
 				String loyaltyPoint=customerManager.getLoyaltyPointForMember(memberID);
 				lblOriginalLoyaltypoint.setText(loyaltyPoint);
-				discountPercentage = discountManager.getDiscountApplicable(memberID);
-				
+				//discountPercentage = discountManager.getDiscountApplicable(memberID);
+				try {
+					customerManager.updateLoyaltyPoint(memberID, 100);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				txtDiscount.setText(discountPercentage);
 				
-			} catch (IOException | ParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			
 	        
 
 	        }

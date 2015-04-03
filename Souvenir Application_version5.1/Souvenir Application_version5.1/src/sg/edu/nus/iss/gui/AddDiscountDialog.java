@@ -44,6 +44,9 @@ public class AddDiscountDialog extends OkCancelDialog {
 	DiscountManager discountManager;
 	Discount discount;
 	
+	
+	
+	
 	public AddDiscountDialog(DiscountManager discountManager) {
 		super ( null, "Add Discount");
         this.discountManager = discountManager;

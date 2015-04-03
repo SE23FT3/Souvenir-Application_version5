@@ -230,6 +230,53 @@ public String getLoyaltyPointForMember(String memberID) {
 }
 
 
+public void updateLoyaltyPoint(String memberID,int points) throws IOException
+{
+	Member member=null;
+	int loyaltyPointsRedeemed;
+	ArrayList<Member> memberList=null;
+	if(memberID!=null)
+	{
+		 BufferedWriter bout = new BufferedWriter(new FileWriter(Constants.MEMBERSFILE));
+		String loyaltyPoints=getLoyaltyPointForMember(memberID);
+		System.out.println("updateLoyaltyPoint"+loyaltyPoints);
+		if(loyaltyPoints.equals("-1"))
+		{
+			 loyaltyPointsRedeemed=0;
+			loyaltyPointsRedeemed=points;
+		}
+		else
+		{
+			 loyaltyPointsRedeemed=Integer.parseInt(loyaltyPoints);
+			loyaltyPointsRedeemed=loyaltyPointsRedeemed+points;
+		}
+		try {
+			memberList=retrieveMemberDataFromFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 Iterator<Member> iterator = memberList.iterator();
+			while (iterator.hasNext()) {							
+				Member mem=iterator.next();
+				if(mem.getMemberId().equalsIgnoreCase(memberID))
+				{
+					mem.setLoyaltyPoint(String.valueOf(loyaltyPointsRedeemed));
+				}
+				String line=mem.getCustomerName()+","+mem.getMemberId()+","+mem.getLoyaltyPoint();
+				System.out.println(line);
+				try {
+					bout.write(line);
+					bout.newLine();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		
+	}
+}
 
 }
 

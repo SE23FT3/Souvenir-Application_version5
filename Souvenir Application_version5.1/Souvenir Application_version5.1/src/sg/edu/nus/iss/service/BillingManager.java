@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JLabel;
 
@@ -91,8 +92,8 @@ public class BillingManager implements Constants{
 	}
 
 	private int generateTransID() {
-		// TODO Auto-generated method stub
-		return 0;
+		 return (int) TimeUnit.SECONDS.convert(
+			        System.currentTimeMillis(), TimeUnit.MILLISECONDS);
 	}
 
 	public double calculateTotalPrice(ArrayList<PurchaseOrderItem> itemsList) {

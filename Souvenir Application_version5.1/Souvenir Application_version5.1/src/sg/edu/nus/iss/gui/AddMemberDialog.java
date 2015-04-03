@@ -2,6 +2,8 @@ package sg.edu.nus.iss.gui;
 
 import java.awt.GridLayout;
 import java.io.IOException;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -43,12 +45,49 @@ public class AddMemberDialog extends OkCancelDialog{
 		p.add(memberNameField);
 		p.add(new JLabel("Member ID"));
 		memberIDField = new JTextField(20);
+		String memberIdentity=createUniqueMemebrId();
+		System.out.println("memberIdentity:"+memberIdentity);
+		memberIDField.setText(memberIdentity);
+		memberIDField.setEditable(false);
 		p.add(memberIDField);
 		p.add(new JLabel("Loyalty Points"));
 		memberLoyaltyPointField = new JTextField(20);
+		memberLoyaltyPointField.setText("-1");
+		memberIDField.setEditable(false);
 		p.add(memberLoyaltyPointField);
 		return p;
 		
+	}
+
+	private String createUniqueMemebrId() {
+//		 int memID=(int) TimeUnit.SECONDS.convert(
+//			        System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+//		 String memberId=String.valueOf(memID).substring(0, 4);
+		String memberIdentity;
+		final String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	    final int N = alphabet.length();
+
+	    Random r = new Random();
+	    char memberAlpha = 0;
+	    for (int i = 0; i < 50; i++) {
+	    	 memberAlpha=alphabet.charAt(r.nextInt(N));
+	        
+	    }
+	    int memID=(int) TimeUnit.SECONDS.convert(System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+	    int memberId=memID;
+	    String memA=String.valueOf(memberAlpha);
+	    System.out.println("memA"+memA);
+	    String memberNum=String.valueOf(memberId).substring(0, 9);
+	    System.out.println("memberNum"+memberNum);
+	    memberIdentity=memA+memberNum;
+//		        System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+//	 String memberId=String.valueOf(memID).substring(0, 4);
+//		 int rnd = (int) (Math.random() * 52); // or use Random or whatever
+//		    char base = (rnd < 26) ? 'A' : 'a';
+//		    String memberId= (char) (base + rnd % 26);
+//		    
+		 return memberIdentity;
+		 
 	}
 
 	@Override
@@ -60,7 +99,12 @@ public class AddMemberDialog extends OkCancelDialog{
 	        String memberLoyaltyPoint = memberLoyaltyPointField.getText();
 	        if ((memberName.length() == 0) || (memberID.length() == 0)
 	        		|| (memberLoyaltyPoint.length() == 0))
-		return valid;
+	        	
+				{
+					JOptionPane.showMessageDialog(null,"Fields for addition of new  entry are empty.");
+					return valid;
+				}
+		
 	        else{
 	        	member=new Member();
 	        	member.setCustomerName(memberName);
@@ -75,8 +119,10 @@ public class AddMemberDialog extends OkCancelDialog{
 			}
 			
 			if(valid){
-				JOptionPane.showMessageDialog(null,"Addition new data is successful");
+				JOptionPane.showMessageDialog(null,"Addition new data is successful.");
 			}
+			
+			
 			customerManager.refresh();
 
 
