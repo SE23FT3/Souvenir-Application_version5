@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 
 import sg.edu.nus.iss.*;
 import sg.edu.nus.iss.gui.MainMenu;
-import sg.edu.nus.iss.gui.MainPanel;
+import sg.edu.nus.iss.gui.LoginPanel;
 import sg.edu.nus.iss.gui.ProductPanel;
 import sg.edu.nus.iss.models.Product;
 import sg.edu.nus.iss.service.ProductManager;

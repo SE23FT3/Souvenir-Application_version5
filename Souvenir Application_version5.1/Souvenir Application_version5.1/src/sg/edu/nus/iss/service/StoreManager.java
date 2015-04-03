@@ -3,11 +3,11 @@ package sg.edu.nus.iss.service;
 import java.io.IOException;
 
 import sg.edu.nus.iss.gui.MainMenu;
-import sg.edu.nus.iss.gui.MainPanel;
+import sg.edu.nus.iss.gui.LoginPanel;
 
 public class StoreManager {
 	
-	private MainPanel mainPanel;
+	private LoginPanel mainPanel;
 	private MainMenu mainMenu;
 
 
@@ -15,7 +15,7 @@ public class StoreManager {
 	public void start() throws IOException {
 		
 		
-		mainPanel = new MainPanel(this);
+		mainPanel = new LoginPanel(this);
 		mainPanel.pack();
 		mainPanel.setVisible (true);	
 	}

@@ -60,9 +60,7 @@ public class AddMemberDialog extends OkCancelDialog{
 	}
 
 	private String createUniqueMemebrId() {
-//		 int memID=(int) TimeUnit.SECONDS.convert(
-//			        System.currentTimeMillis(), TimeUnit.MILLISECONDS);
-//		 String memberId=String.valueOf(memID).substring(0, 4);
+
 		String memberIdentity;
 		final String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	    final int N = alphabet.length();
@@ -80,12 +78,7 @@ public class AddMemberDialog extends OkCancelDialog{
 	    String memberNum=String.valueOf(memberId).substring(0, 9);
 	    System.out.println("memberNum"+memberNum);
 	    memberIdentity=memA+memberNum;
-//		        System.currentTimeMillis(), TimeUnit.MILLISECONDS);
-//	 String memberId=String.valueOf(memID).substring(0, 4);
-//		 int rnd = (int) (Math.random() * 52); // or use Random or whatever
-//		    char base = (rnd < 26) ? 'A' : 'a';
-//		    String memberId= (char) (base + rnd % 26);
-//		    
+	    
 		 return memberIdentity;
 		 
 	}

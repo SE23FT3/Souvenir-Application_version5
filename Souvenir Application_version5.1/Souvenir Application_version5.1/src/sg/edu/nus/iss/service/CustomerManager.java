@@ -35,6 +35,7 @@ public class CustomerManager implements Constants {
 		memberPanel = new MemberPanel(this);
 
 	}
+	
 
 	public ArrayList<Member> retrieveMemberDataFromFile() throws IOException{
 		String dataofFile=null;
@@ -95,7 +96,7 @@ public boolean addNewMemberData(Member member) throws IOException {
 		
 		if(member!=null)
 		{
-			
+			System.out.println("addNewMemberData");
 			String lp="" + member.getLoyaltyPoint();
 			String content=member.getCustomerName()+","+member.getMemberId()+","+ lp;
 			System.out.println(content);
@@ -230,50 +231,55 @@ public String getLoyaltyPointForMember(String memberID) {
 }
 
 
-public void updateLoyaltyPoint(String memberID,int points) throws IOException
+public void updateLoyaltyPoint(String memberID,String loyaltyPoints, int points) throws IOException
 {
 	Member member=null;
 	int loyaltyPointsRedeemed;
 	ArrayList<Member> memberList=null;
 	if(memberID!=null)
 	{
-		 BufferedWriter bout = new BufferedWriter(new FileWriter(Constants.MEMBERSFILE));
-		String loyaltyPoints=getLoyaltyPointForMember(memberID);
+		 
+		
 		System.out.println("updateLoyaltyPoint"+loyaltyPoints);
-		if(loyaltyPoints.equals("-1"))
+		int lp=Integer.parseInt(loyaltyPoints);
+		if(lp== -1)
 		{
+			System.out.println("Nem member");
 			 loyaltyPointsRedeemed=0;
 			loyaltyPointsRedeemed=points;
 		}
 		else
 		{
+			System.out.println("old member");
 			 loyaltyPointsRedeemed=Integer.parseInt(loyaltyPoints);
 			loyaltyPointsRedeemed=loyaltyPointsRedeemed+points;
 		}
 		try {
 			memberList=retrieveMemberDataFromFile();
+			System.out.println("memberList:size:"+memberList.size());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		if(memberList!=null)
+		{
+			BufferedWriter bufferedout = new BufferedWriter(new FileWriter(Constants.MEMBERSFILE));
 		 Iterator<Member> iterator = memberList.iterator();
 			while (iterator.hasNext()) {							
 				Member mem=iterator.next();
 				if(mem.getMemberId().equalsIgnoreCase(memberID))
 				{
+					System.out.println("matched new loyaltyPointsRedeemed:"+loyaltyPointsRedeemed);
 					mem.setLoyaltyPoint(String.valueOf(loyaltyPointsRedeemed));
 				}
 				String line=mem.getCustomerName()+","+mem.getMemberId()+","+mem.getLoyaltyPoint();
 				System.out.println(line);
-				try {
-					bout.write(line);
-					bout.newLine();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				bufferedout.write(line);
+				bufferedout.newLine();
 				
 			}
+			bufferedout.close();
+	}
 		
 	}
 }
