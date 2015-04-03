@@ -16,6 +16,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import sg.edu.nus.iss.gui.LoginPanel;
 import sg.edu.nus.iss.gui.MainMenu;
 import sg.edu.nus.iss.main.StoreApplication;
 import sg.edu.nus.iss.models.Product;
@@ -37,6 +38,7 @@ public class LoginUser
 	private MainMenu mainMenu;
 	private int j;
 	private ArrayList<StoreKeeper> storeKeeperList;
+	private LoginPanel loginPanel;
 	
 	public LoginUser(StoreManager manager) throws IOException{
 		this.manager = manager;
@@ -97,8 +99,9 @@ public class LoginUser
 		return result;
       }
 
-	public void changePassword(String oldpwd,String newpwd)
+	public boolean changePassword(String oldpwd,String newpwd)
 	{
+		boolean result=false;
 		LineNumberReader lnr=null;		
 		try
 		{
@@ -117,6 +120,8 @@ public class LoginUser
 					fw.write(line.replace(part2, newpwd));
 					fw.close();
 					JOptionPane.showMessageDialog(null, "Change password successfully!");
+					result = true;
+					
 				}
 			}
 		} 
@@ -128,6 +133,7 @@ public class LoginUser
 		{
 			e.printStackTrace();
 		}
+		return result;
 	}
 	public void addUser(String uname, String rand) 
 	{

@@ -127,7 +127,7 @@ public class LoginPanel extends JFrame
 		});
 		panel.add(btnChangePassword, "cell 3 7,alignx center,aligny center,grow");
 	}
-	public void CreateChangePasswordFrame(){
+	public JFrame CreateChangePasswordFrame(){
 		changePasswordFrame = new JFrame();
 		changePasswordFrame.setVisible(true);
 		changePasswordFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -147,7 +147,9 @@ public class LoginPanel extends JFrame
 			public void actionPerformed(ActionEvent e){
 				String oldpwd= oldpassword.getText();
 				String newpwd= newpassword.getText();
-				loginUser.changePassword(oldpwd, newpwd);
+				if(loginUser.changePassword(oldpwd, newpwd)){
+					changePasswordFrame.dispose();
+				}
 			}
 		});
 		JButton button2= new JButton("Cancel change password and return");
@@ -160,6 +162,10 @@ public class LoginPanel extends JFrame
 		panel.add(button2);
 		changePasswordFrame.add(panel);
 		changePasswordFrame.pack();
+		return changePasswordFrame;
+	}
+	public void disposeChangePasswordPanel(){
+		dispose();
 	}
 
 
