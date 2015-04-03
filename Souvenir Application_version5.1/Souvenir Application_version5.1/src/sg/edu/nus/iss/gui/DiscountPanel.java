@@ -167,7 +167,6 @@ public class DiscountPanel extends JPanel {
                 AddDiscountDialog d;
 				d = new  AddDiscountDialog (discountManager);
 				d.pack();
-				d.setSize(600, 600);
 				d.setVisible (true);
 
             }
