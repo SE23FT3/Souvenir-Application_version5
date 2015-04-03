@@ -109,6 +109,7 @@ public class LoginPanel extends JFrame
 						}
 						if(!loginUser.validatelogin(uname,pwd)){
 							JOptionPane.showMessageDialog(null, "The username or password you entered is incorrect");
+							passwordfield.setText("");
 						}
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
@@ -145,9 +146,10 @@ public class LoginPanel extends JFrame
 		JButton button1= new JButton("Click to change your password");
 		button1.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				String uname = usernameField.getText();
 				String oldpwd= oldpassword.getText();
 				String newpwd= newpassword.getText();
-				if(loginUser.changePassword(oldpwd, newpwd)){
+				if(loginUser.changePassword(uname,oldpwd, newpwd)){
 					changePasswordFrame.dispose();
 				}
 			}
