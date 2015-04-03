@@ -23,6 +23,8 @@ public class AddCategoryDialog extends OkCancelDialog {
 		super(null,"Add Category");
 		this.categoryManager = categoryManager;
 	}
+	
+	
 
 	@Override
 	protected JPanel createFormPanel() {
