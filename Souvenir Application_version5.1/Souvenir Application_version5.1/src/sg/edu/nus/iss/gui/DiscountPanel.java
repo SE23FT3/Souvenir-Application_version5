@@ -34,15 +34,21 @@ import sg.edu.nus.iss.models.Member;
 import sg.edu.nus.iss.models.Product;
 import sg.edu.nus.iss.service.DiscountManager;
 
-public class DiscountPanel extends JPanel {
+public class DiscountPanel extends JPanel implements ActionListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private MainMenu mainMenu;
 	private StoreApplication manager;
 	private JScrollPane scrollPane;
 	private DefaultTableModel tableModel;
 	private JTable discountTable;
-	private DiscountManager discountManager;
+	private JButton btnAdd;
 	
-	public DiscountPanel(DiscountManager discountManager) throws IOException{
-		this.discountManager = discountManager;
+	public DiscountPanel(MainMenu mainMenu, StoreApplication manager) throws IOException{
+		this.mainMenu = mainMenu;
+		this.manager = manager;
 		discountTable = new JTable();
         scrollPane = new JScrollPane(discountTable);
 	    tableModel=new DefaultTableModel(0,2);
@@ -95,7 +101,7 @@ public class DiscountPanel extends JPanel {
 		                    	 System.out.println("data in combobox ::"+data+" value:"+searchField.getText());
 		                    
 		                    	 String value=searchField.getText();
-		                    	 ArrayList<Discount> discountList=discountManager.searchDataAndDisplay(data,value);
+		                    	 ArrayList<Discount> discountList=manager.getDiscountManager().searchDataAndDisplay(data,value);
 		                    	  if(discountList.size()!=0){
                     	        	  addComponeneTable(discountList);
                     	 }
@@ -123,7 +129,7 @@ public class DiscountPanel extends JPanel {
 		        		
 		        		ArrayList newdiscountList=null;
 						try {
-							newdiscountList = discountManager.retrieveDiscountDataFromFile();
+							newdiscountList = manager.getDiscountManager().retrieveDiscountDataFromFile();
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -142,7 +148,7 @@ public class DiscountPanel extends JPanel {
 	        tableModel.setColumnIdentifiers(columns);
 	        discountTable.setModel(tableModel);
 	       // String oneline = null;
-	        ArrayList discountList=discountManager.getDiscountList();
+	        ArrayList discountList=manager.getDiscountManager().getDiscountList();
 	        System.out.println("createTablePanel::discountList::"+discountList.size());
 	        Iterator<Discount> iterator = discountList.iterator();
 			while (iterator.hasNext()) {
@@ -163,23 +169,9 @@ public class DiscountPanel extends JPanel {
 
         JPanel p = new JPanel (new GridLayout (0, 1));
 
-        JButton b = new JButton ("Add");
-        b.addActionListener (new ActionListener () {
-            public void actionPerformed (ActionEvent e) {
-                AddDiscountDialog d;
-				try {
-					d = new  AddDiscountDialog (discountManager);
-					d.pack();
-					d.setVisible (true);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-
-            }
-        });
-        p.add (b);
+        btnAdd = new JButton ("Add");
+        btnAdd.addActionListener (this);
+        p.add (btnAdd);
         JButton deleteButton = new JButton ("Delete");
         deleteButton.addActionListener (new ActionListener () {
             public void actionPerformed (ActionEvent e) {
@@ -192,7 +184,7 @@ public class DiscountPanel extends JPanel {
                ArrayList discountList = null;
 			try {
 				Discount removeDiscount=new Discount();
-				discountList = discountManager.retrieveDiscountDataFromFile();
+				discountList = manager.getDiscountManager().retrieveDiscountDataFromFile();
 				Iterator<Discount> iterator = discountList.iterator();
 				while (iterator.hasNext()) {							
 					Discount discount=iterator.next();
@@ -206,7 +198,7 @@ public class DiscountPanel extends JPanel {
 					
 				}
 				
-				boolean valid=discountManager.writeBackToFile(discountList);
+				boolean valid=manager.getDiscountManager().writeBackToFile(discountList);
 				if(valid)
 				{
 				System.out.println("newdiscountList::"+discountList.size());
@@ -282,5 +274,17 @@ public class DiscountPanel extends JPanel {
 	public void refresh() {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==btnAdd){
+        AddDiscountDialog d;
+		d = new  AddDiscountDialog (this,manager);
+		d.pack();
+		d.setVisible (true);
+		}
+	}
+	public void refreshDiscountPanel() {
+		mainMenu.refreshDiscountPanel();
 	}
 }

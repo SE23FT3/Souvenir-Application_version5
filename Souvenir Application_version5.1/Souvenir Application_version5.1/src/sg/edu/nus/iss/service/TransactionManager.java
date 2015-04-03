@@ -7,7 +7,7 @@ import sg.edu.nus.iss.util.Constants;
 
 public class TransactionManager implements Constants {
 
-	public TransactionManager(MainMenu mainMenu) {
+	public TransactionManager() {
 		// TODO Auto-generated constructor stub
 	}
 

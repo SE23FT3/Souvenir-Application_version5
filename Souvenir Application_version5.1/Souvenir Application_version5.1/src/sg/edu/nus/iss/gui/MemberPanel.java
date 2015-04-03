@@ -33,19 +33,20 @@ import sg.edu.nus.iss.models.Member;
 import sg.edu.nus.iss.service.CustomerManager;
 import sg.edu.nus.iss.service.ProductManager;
 
-public class MemberPanel extends JPanel{
+public class MemberPanel extends JPanel implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 	private StoreApplication manager;
 	private JScrollPane scrollPane;
 	private DefaultTableModel tableModel;
 	private JTable memberTable;
-	private CustomerManager customerManager;
-	private ProductManager productManager;
+	private MainMenu mainMenu;
+	private JButton addButton;
 
 	
-	public MemberPanel(CustomerManager customerManager) throws IOException{
-		this.customerManager = customerManager;
+	public MemberPanel(MainMenu mainMenu, StoreApplication manager) throws IOException{
+		this.mainMenu = mainMenu;
+		this.manager= manager;
 		memberTable = new JTable();
         scrollPane = new JScrollPane(memberTable);
 	    tableModel=new DefaultTableModel(0,2);
@@ -102,7 +103,7 @@ public class MemberPanel extends JPanel{
 		                    	 System.out.println("data in combobox ::"+data+" value:"+searchField.getText());
 		                    
 		                    	 String value=searchField.getText();
-		                    	 ArrayList<Member> memberList=customerManager.searchDataAndDisplay(data, value);
+		                    	 ArrayList<Member> memberList=manager.getCustomerManager().searchDataAndDisplay(data, value);
 		                    	 if(memberList.size()!=0){
 		                    	        	  addComponeneTable(memberList);
 		                    	 }
@@ -129,7 +130,7 @@ public class MemberPanel extends JPanel{
 		        		
 		        		ArrayList newMemberList=null;
 						try {
-							newMemberList = customerManager.retrieveMemberDataFromFile();
+							newMemberList = manager.getCustomerManager().retrieveMemberDataFromFile();
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -170,22 +171,9 @@ public class MemberPanel extends JPanel{
 	private JPanel createButtonPanel() {
         JPanel p = new JPanel (new GridLayout (0, 1));
 
-        JButton addButton = new JButton ("Add");
-        addButton.addActionListener (new ActionListener () {
-            public void actionPerformed (ActionEvent e) {
-                AddMemberDialog d;
-				try {
-					d = new AddMemberDialog (customerManager);
-					d.pack();
-					d.setVisible (true);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-
-            }
-        });
+        addButton = new JButton ("Add");
+        addButton.addActionListener (this);
+            
         JButton deleteButton = new JButton ("Delete");
         deleteButton.addActionListener (new ActionListener () {
             public void actionPerformed (ActionEvent e) {
@@ -195,7 +183,7 @@ public class MemberPanel extends JPanel{
                ArrayList newdiscountList=null;
                ArrayList memberList = null;
 			try {
-				memberList = customerManager.retrieveMemberDataFromFile();
+				memberList = manager.getCustomerManager().retrieveMemberDataFromFile();
 				 System.out.println("memberList before deleteion:::"+memberList.size());
 				Member removeMember=new Member();
 				 Iterator<Member> iterator = memberList.iterator();
@@ -212,7 +200,7 @@ public class MemberPanel extends JPanel{
 					}
 					 System.out.println("memberList afteer deleteion:::"+memberList.size());
 					System.out.println("member name delete::"+removeMember.getCustomerName());
-					boolean valid=customerManager.writeBackToFile(memberList);
+					boolean valid=manager.getCustomerManager().writeBackToFile(memberList);
 					if(valid)
 					{
 					System.out.println("newdiscountList::"+memberList.size());
@@ -263,7 +251,7 @@ public class MemberPanel extends JPanel{
 			String[] columns = {"Member Name", "Member ID"," Loyaly Points"};
 		        tableModel.setColumnIdentifiers(columns);
 		        memberTable.setModel(tableModel);
-		        ArrayList memberList=customerManager.retrieveMemberDataFromFile();
+		        ArrayList memberList=manager.getCustomerManager().retrieveMemberDataFromFile();
 		        Iterator<Member> iterator = memberList.iterator();
 				while (iterator.hasNext()) {
 					Member m=iterator.next();
@@ -277,6 +265,20 @@ public class MemberPanel extends JPanel{
 	
 			return scrollPane;
 		}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==addButton){
+        AddMemberDialog d;
+		d = new AddMemberDialog (this,manager);
+		d.pack();
+		d.setVisible (true);
+		}		
+	}
+
+	public void refreshCustomerPanel() {
+		mainMenu.refreshCustomerPanel();		
+	}
 
 
 }

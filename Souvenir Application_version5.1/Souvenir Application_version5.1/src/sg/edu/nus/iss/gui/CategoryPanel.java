@@ -33,18 +33,21 @@ import sg.edu.nus.iss.models.Member;
 import sg.edu.nus.iss.models.Product;
 import sg.edu.nus.iss.service.CategoryManager;
 
-public class CategoryPanel extends JPanel {
+public class CategoryPanel extends JPanel implements ActionListener{
 
 
 	private StoreApplication manager;
+	private MainMenu mainMenu;
 	private JTable categoryTable;
 	private JScrollPane scrollPane;
 	private DefaultTableModel tableModel;
 	private CategoryManager categoryManager;
 	private ArrayList<Category> categoryList;
+	private JButton btnAdd;
 
-	public CategoryPanel(CategoryManager categoryManager)throws IOException{
-		this.categoryManager = categoryManager;
+	public CategoryPanel(MainMenu mainMenu,StoreApplication manager)throws IOException {
+		this.mainMenu = mainMenu;
+		this.manager = manager;
 		categoryTable = new JTable();
 		scrollPane = new JScrollPane(categoryTable);
 		tableModel=new DefaultTableModel(0,2);
@@ -177,22 +180,10 @@ public class CategoryPanel extends JPanel {
 
 	private JPanel createButtonPanel() {
 		JPanel p = new JPanel(new GridLayout(0,1));
-		JButton b = new JButton("Add");
-		b.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				AddCategoryDialog d;
-				try {
-					d = new AddCategoryDialog (categoryManager);
-					d.pack();
-					d.setVisible (true);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+		btnAdd = new JButton("Add");
+		btnAdd.addActionListener(this);
 
-			}
-		});
-        p.add (b);
+        p.add (btnAdd);
         JPanel bp = new JPanel();
         bp.setLayout(new BorderLayout());
         bp.add("North",p);
@@ -260,9 +251,31 @@ public class CategoryPanel extends JPanel {
 	protected void dispose() {
 		this.setVisible(false);		
 	}
-	public void refresh() {
-		// TODO Auto-generated method stub
+//	public void refresh() {
+//		// TODO Auto-generated method stub
+//		
+//	}
+
+	public void refreshCategoryPanel() {
+		mainMenu.refreshCategoryPanel();
 		
 	}
 
-}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==btnAdd){
+			AddCategoryDialog d;
+				try {
+					d = new AddCategoryDialog (this,manager);
+					d.pack();
+					d.setVisible (true);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			} }		
+		
+	}
+
+

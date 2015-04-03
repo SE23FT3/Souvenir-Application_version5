@@ -1,7 +1,5 @@
 package sg.edu.nus.iss.service;
 
-
-
 import java.awt.Component;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -26,16 +24,13 @@ import sg.edu.nus.iss.util.Constants;
 
 public class CategoryManager {
 	private ArrayList<Category> categories;
-	private MainMenu mainMenu;
-	private CategoryPanel categoryPanel;
 	private Object categoryList;
-	public CategoryManager(MainMenu mainMenu) throws IOException {
-		this.mainMenu = mainMenu;
-		categoryPanel = new CategoryPanel(this);
+	private Category category;
 
+	public CategoryManager() {
+		category = new Category();
 	}
 
-	public CategoryManager(){}
 	public ArrayList<Category> ListCategory() {
 		ArrayList<Category> ListCategory = new ArrayList<Category>();
 		String filename = "./data/Category.dat";
@@ -56,78 +51,70 @@ public class CategoryManager {
 		}
 		return ListCategory;
 	}
-	
-	public void refresh() throws IOException {
-		mainMenu.refreshCategoryPanel();
-		mainMenu.displayCategoryPanel();
-		
-	}
 
-	public CategoryPanel getCategoryPanel() {
-		return categoryPanel;
-	}
+	// public void refresh() throws IOException {
+	// mainMenu.refreshCategoryPanel();
+	// mainMenu.displayCategoryPanel();
+	//
+	// }
 
-public List<Category> searchDataAndDisplay(String data, String value) {
-		
-		ArrayList<Category> searchedlist=new ArrayList<Category>();
+	public List<Category> searchDataAndDisplay(String data, String value) {
+
+		ArrayList<Category> searchedlist = new ArrayList<Category>();
 		ArrayList<Category> categoryList = null;
 		Category searchedCategory;
-		System.out.println("searchDataAndDisplay"+value+data);
+		System.out.println("searchDataAndDisplay" + value + data);
 		try {
 			categoryList = retrieveCategoryDataFromFile();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	      Iterator<Category> iterator = categoryList.iterator();
-				while (iterator.hasNext()) {		
-					searchedCategory=new Category();
-					Category dis=iterator.next();
-					if(data.equalsIgnoreCase("Category Code"))
-					{
-					
-						if(value.equalsIgnoreCase(dis.getCategoryCode())){
-						//searcheddiscount=new Discount();
-					
-							searchedCategory=dis;
-							searchedlist.add(searchedCategory);	
-					
-						
-						}
-					}
-					else if(data.equalsIgnoreCase("Category Name"))
-					{
-						if(value.equalsIgnoreCase(dis.getCategoryName())){
-						
-							searchedCategory=dis;
-							searchedlist.add(searchedCategory);	
-						}
-					}				
+		Iterator<Category> iterator = categoryList.iterator();
+		while (iterator.hasNext()) {
+			searchedCategory = new Category();
+			Category dis = iterator.next();
+			if (data.equalsIgnoreCase("Category Code")) {
+
+				if (value.equalsIgnoreCase(dis.getCategoryCode())) {
+					// searcheddiscount=new Discount();
+
+					searchedCategory = dis;
+					searchedlist.add(searchedCategory);
+
 				}
-				System.out.println("searchedlist:"+searchedlist.size());
-		return  searchedlist;
-	
-}
+			} else if (data.equalsIgnoreCase("Category Name")) {
+				if (value.equalsIgnoreCase(dis.getCategoryName())) {
 
+					searchedCategory = dis;
+					searchedlist.add(searchedCategory);
+				}
+			}
+		}
+		System.out.println("searchedlist:" + searchedlist.size());
+		return searchedlist;
 
+	}
 
-	public ArrayList<Category> retrieveCategoryDataFromFile() throws IOException{
-		String dataofFile=null;
-		Category category=null;
-		ArrayList<Category> categoryList=new ArrayList<Category>();;
-		FileReader r=null;
-		BufferedReader br=null;
+	public ArrayList<Category> retrieveCategoryDataFromFile()
+			throws IOException {
+		String dataofFile = null;
+		Category category = null;
+		ArrayList<Category> categoryList = new ArrayList<Category>();
+		;
+		FileReader r = null;
+		BufferedReader br = null;
 		try {
-			r=new FileReader(Constants.CATEGORYTFILE);
-			br=new BufferedReader(r);
-			while((dataofFile=br.readLine())!=null){
+			r = new FileReader(Constants.CATEGORYTFILE);
+			br = new BufferedReader(r);
+			while ((dataofFile = br.readLine()) != null) {
 				System.out.println(dataofFile);
-				
-				List<String> categoryString = Arrays.asList(dataofFile.split(","));
-				for(int z=0;z<=categoryString.size();z++)
-				{
-					
-					category=new Category();
+
+				List<String> categoryString = Arrays.asList(dataofFile
+						.split(","));
+				for (int z = 0; z <= categoryString.size(); z++) {
+
+					category = new Category();
 					category.setCategoryCode(categoryString.get(0));
 					category.setCategoryName(categoryString.get(1));
 					categoryList.add(category);
@@ -141,51 +128,56 @@ public List<Category> searchDataAndDisplay(String data, String value) {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
+		} finally {
 			br.close();
 		}
-	return categoryList;
+		return categoryList;
 	}
 
 	public boolean writeBackToFile(ArrayList categoryList) throws IOException {
 
-		if(categoryList!=null)
-		{
-		
-	        BufferedWriter bout = new BufferedWriter(new FileWriter(Constants.CATEGORYTFILE));
-	        Iterator<Category> iterator = categoryList.iterator();
+		if (categoryList != null) {
+
+			BufferedWriter bout = new BufferedWriter(new FileWriter(
+					Constants.CATEGORYTFILE));
+			Iterator<Category> iterator = categoryList.iterator();
 			while (iterator.hasNext()) {
-				
-				
-				Category cat=iterator.next();
-				String line=cat.getCategoryCode()+","+cat.getCategoryName();
-					System.out.println(line);
-					bout.write(line);
-					bout.newLine();
-				
-			}    
-			
-			bout.close();						
+
+				Category cat = iterator.next();
+				String line = cat.getCategoryCode() + ","
+						+ cat.getCategoryName();
+				System.out.println(line);
+				bout.write(line);
+				bout.newLine();
+
+			}
+
+			bout.close();
 		}
 		return true;
 	}
 
 	public boolean addNewCategory(Category category) throws IOException {
-		if(category!=null)
-		{
-			
-			
-			String content=category.getCategoryCode()+","+category.getCategoryName();
+		if (category != null) {
+
+			String content = category.getCategoryCode() + ","
+					+ category.getCategoryName();
 			System.out.println(content);
-		
-	        BufferedWriter bout = new BufferedWriter(new FileWriter(Constants.CATEGORYTFILE,true));
-	          
-	         bout.append(content);
-	         bout.newLine();
-	         bout.close();						
+
+			BufferedWriter bout = new BufferedWriter(new FileWriter(
+					Constants.CATEGORYTFILE, true));
+
+			bout.append(content);
+			bout.newLine();
+			bout.close();
 		}
 		return true;
-		
+
 	}
-	
+
+	public Category getCategory() {
+		return category;
+	}
+
+
 }

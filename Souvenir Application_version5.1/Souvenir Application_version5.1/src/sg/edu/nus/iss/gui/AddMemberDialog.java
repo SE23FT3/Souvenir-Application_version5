@@ -19,22 +19,26 @@ import sg.edu.nus.iss.util.OkCancelDialog;
 
 public class AddMemberDialog extends OkCancelDialog{
 
-	private CustomerManager customerManager;
+	private StoreApplication manager;
+	private MemberPanel memberPanel;
 	private JTextField memberNameField;
 	private JTextField memberIDField;
 	private JTextField memberLoyaltyPointField;
-    Member	member=null;
 	/**
 	 * Created by Deepsha on 24March 2015
 	 * @throws IOException 
 	 */
 
-	public AddMemberDialog(CustomerManager customerManager) throws IOException {
-		super ( null, "Add Member");
-        this.customerManager = customerManager;
-	}
+
 
 	
+	public AddMemberDialog(MemberPanel memberPanel, StoreApplication manager) {
+		super ( null, "Add Member");
+		this.memberPanel=memberPanel;
+		this.manager = manager;
+	}
+
+
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -111,13 +115,13 @@ public class AddMemberDialog extends OkCancelDialog{
 	        	} 
 	 
 	        	else{
-	        	member=new Member();
+	        	Member member=new Member();
 	        	member.setCustomerName(memberName);
 	        	member.setMemberId(memberID);
 	        	member.setLoyaltyPoint(memberLoyaltyPoint);
 	       
 			try {
-				valid = customerManager.addNewMemberData(member);
+				valid = manager.getCustomerManager().addNewMemberData(member);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -128,7 +132,7 @@ public class AddMemberDialog extends OkCancelDialog{
 			}
 			
 			
-			customerManager.refresh();
+			memberPanel.refreshCustomerPanel();
 
 
 	        return true;

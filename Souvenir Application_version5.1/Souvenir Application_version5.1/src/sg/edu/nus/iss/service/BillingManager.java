@@ -21,16 +21,16 @@ import sg.edu.nus.iss.util.Constants;
 public class BillingManager implements Constants{
 
 	private MainMenu mainMenu;
-	private BillingPanel billingPanel;
 	private PurchaseOrderItem orderedItems;
 	public BillingManager(MainMenu mainMenu) throws IOException {
 		this.mainMenu = mainMenu;
-		billingPanel = new BillingPanel(this);	}
+		}
 
-	public BillingPanel getBillingPanel() {
-		// TODO Auto-generated method stub
-		return billingPanel;
+	public BillingManager() {
+		// TODO Auto-generated constructor stub
 	}
+
+
 
 	public void clock(JLabel lblClock) {
 		mainMenu.clock(lblClock);		

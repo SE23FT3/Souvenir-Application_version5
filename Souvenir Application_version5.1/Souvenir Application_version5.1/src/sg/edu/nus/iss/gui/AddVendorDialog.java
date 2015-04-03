@@ -13,14 +13,17 @@ import sg.edu.nus.iss.service.VendorManager;
 import sg.edu.nus.iss.util.OkCancelDialog;
 
 public class AddVendorDialog extends OkCancelDialog {
-
-	private VendorManager vendorManager;
+	private StoreApplication manager;
+	private VendorPanel vendorPanel;
 	private JTextField vendorNameField;
 	private JTextField vendorDescriptionField;
 
-	public AddVendorDialog(VendorManager vendorManager) throws IOException {
+
+
+	public AddVendorDialog(VendorPanel vendorPanel, StoreApplication manager) {
 		super(null,"Add Vendor");
-		this.vendorManager=vendorManager;
+		this.vendorPanel = vendorPanel;
+		this.manager = manager;
 	}
 
 	@Override
@@ -49,11 +52,11 @@ public class AddVendorDialog extends OkCancelDialog {
 //			manager.addProduct(productId,productName,productDescription,
 //					Integer.parseInt(quantityAvaliable),Float.parseFloat(productPrice),Integer.parseInt(barCode),
 //					Integer.parseInt(reorderThreshold),Integer.parseInt(orderQuantity));
-			boolean valid=vendorManager.addVendor(vendorName,vendorDescription);
+			boolean valid=manager.getVendorManager().addVendor(vendorName,vendorDescription);
 			if(valid){
 				JOptionPane.showMessageDialog(null,"Addition new data is successful");
 			}
-			vendorManager.refresh();
+			vendorPanel.refreshVendorPanel();
 		} catch (NumberFormatException | IOException e) {
 						e.printStackTrace();
 		}

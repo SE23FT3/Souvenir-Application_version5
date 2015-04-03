@@ -52,10 +52,12 @@ public class BillingPanel extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	private StoreApplication manager;
+	private MainMenu mainMenu;
 	private DefaultTableModel tableModel1;
 	private BillingManager billingManager;
     private CustomerManager customerManager;
     private ArrayList<PurchaseOrderItem> itemsList;
+    
 	
 	private JLabel memLabel;
 	private JTextField memTextField;
@@ -103,8 +105,8 @@ public class BillingPanel extends JPanel{
 	double totalDiscountedPrice=0.0;
 	String discountPercentage=null;
 	protected String memberID;
-	public BillingPanel(final BillingManager billingManager) throws IOException{
-		this.billingManager = billingManager;
+	public BillingPanel(MainMenu mainMenu,final StoreApplication manager) throws IOException{
+		this.manager = manager;
 		
 		itemsList=new ArrayList<PurchaseOrderItem>();
 		memLabel = new JLabel("Customer:");
@@ -155,7 +157,7 @@ public class BillingPanel extends JPanel{
     	
     	
     	lblClock = new JLabel();
-    	billingManager.clock(lblClock);
+    	mainMenu.clock(lblClock);
     	panel.add(lblClock, "cell 7 0");
     	
     	lblMember = new JLabel("Customer:");
@@ -256,15 +258,15 @@ public class BillingPanel extends JPanel{
 				System.out.println("barcode"+barcode+"quantity"+quantity);
 //			String memberID=txtMemberId.getText().toString();
 //				System.out.println("barcode:"+barcode+"quantity:"+quantity+"memberID:"+memberID);
-			 pItem=billingManager.addProductItemsToCart(barcode,quantity);
+			 pItem=manager.getBillingManager().addProductItemsToCart(barcode,quantity);
 			System.out.println("pItem::**********:::::"+pItem.getNameOfProduct());
 			itemsList.add(pItem);
 			System.out.println("itemsList:"+itemsList.size());
 			createTableForCart(itemsList);
-				totalPriceofPurchasedItems=billingManager.calculateTotalPrice(itemsList);
+				totalPriceofPurchasedItems=manager.getBillingManager().calculateTotalPrice(itemsList);
 			
 			lbl_DisplayTotalPrice.setText(Double.toString(totalPriceofPurchasedItems));
-			totalDiscountedPrice=billingManager.calculateTotalDiscountedPrice(totalPriceofPurchasedItems,discountPercentage);
+			totalDiscountedPrice=manager.getBillingManager().calculateTotalDiscountedPrice(totalPriceofPurchasedItems,discountPercentage);
 			totalDiscountTxt.setText(Double.toString(totalDiscountedPrice));
 
             }

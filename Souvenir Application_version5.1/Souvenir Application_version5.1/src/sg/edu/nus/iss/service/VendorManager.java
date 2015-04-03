@@ -1,7 +1,5 @@
 package sg.edu.nus.iss.service;
 
-
-
 import java.awt.Component;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -20,15 +18,13 @@ import sg.edu.nus.iss.models.Product;
 import sg.edu.nus.iss.models.Vendor;
 
 public class VendorManager {
-	private MainMenu mainMenu;
-	private VendorPanel vendorPanel;
 
 	private ArrayList<Vendor> vendors;
 	private ArrayList<Vendor> vendorList;
-	public VendorManager(MainMenu mainMenu) throws IOException {
-		this.mainMenu = mainMenu;
-		vendorPanel = new VendorPanel(this);
+	private Vendor vendor;
 
+	public VendorManager() {
+		vendor = new Vendor();
 	}
 
 	public ArrayList<Vendor> ListVendor() {
@@ -51,63 +47,52 @@ public class VendorManager {
 		}
 		return ListVendor;
 	}
-	public boolean addVendor(String vendorName, String vendorDescription)throws IOException {
 
-		boolean valid=false;
-		Vendor p = new Vendor(vendorName,vendorDescription);
+	public boolean addVendor(String vendorName, String vendorDescription)
+			throws IOException {
+
+		boolean valid = false;
+		Vendor p = new Vendor(vendorName, vendorDescription);
 		this.ListVendor().add(p);
-		FileWriter w = new FileWriter("./data/Vendors.dat",true);
+		FileWriter w = new FileWriter("./data/Vendors.dat", true);
 		PrintWriter pr = new PrintWriter(w);
-		pr.write("\r"+p.toString());
+		pr.write("\r" + p.toString());
 		pr.close();
-		valid=true;
+		valid = true;
 		return valid;
-	}
-	
-	public void refresh() throws IOException {
-		mainMenu.refreshVendorPanel();
-		mainMenu.displayVendorPanel();
-		
 	}
 
 	public void searchDataAndDisplay(String data, String value) {
 		System.out.print("searchDataAndDisplay");
 	}
 
-	public VendorPanel getVendorPanel() {
-		return vendorPanel;
-	}
-
-	public ArrayList<Vendor> retrieveVendorDataFromFile(String fileName) throws IOException{
-		String dataofFile=null;
-		Vendor vendor=null;
-		 vendorList=new ArrayList<Vendor>();
-		FileReader r=null;
-		BufferedReader br=null;
+	public ArrayList<Vendor> retrieveVendorDataFromFile(String fileName)
+			throws IOException {
+		String dataofFile = null;
+		Vendor vendor = null;
+		vendorList = new ArrayList<Vendor>();
+		FileReader r = null;
+		BufferedReader br = null;
 		try {
-			r=new FileReader(fileName);
-			br=new BufferedReader(r);
-			while((dataofFile=br.readLine())!=null){
+			r = new FileReader(fileName);
+			br = new BufferedReader(r);
+			while ((dataofFile = br.readLine()) != null) {
 				System.out.println(dataofFile);
-				
-				List<String> vendorString = Arrays.asList(dataofFile.split(","));
-				for(int z=0;z<=vendorString.size();z++)
-				{
-					
-					vendor=new Vendor();
-				
+
+				List<String> vendorString = Arrays
+						.asList(dataofFile.split(","));
+				for (int z = 0; z <= vendorString.size(); z++) {
+
+					vendor = new Vendor();
+
 					vendor.setVendorName(vendorString.get(0));
 					vendor.setVendorDescription(vendorString.get(1));
-					
-					
+
 					vendorList.add(vendor);
 					break;
 				}
 
-
-				
 			}
-
 
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch b
@@ -116,15 +101,14 @@ public class VendorManager {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
+		} finally {
 			br.close();
 		}
 
-
-		
-	
 		return vendorList;
 	}
-
+	public Vendor getVendor(){
+		return vendor;
+	}
 
 }

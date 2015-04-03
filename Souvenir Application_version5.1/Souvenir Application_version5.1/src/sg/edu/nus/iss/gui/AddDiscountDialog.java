@@ -33,6 +33,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 public class AddDiscountDialog extends OkCancelDialog {
+	private DiscountPanel discountPanel;
 	private StoreApplication manager;
 	private JTextField discountCodeField;
 	private JTextField discountNameField;
@@ -44,15 +45,18 @@ public class AddDiscountDialog extends OkCancelDialog {
 	private JRadioButton chooseStartDate;
 	private JRadioButton rdbtnNonmember;
 	private JDatePickerImpl datePicker;
-	DiscountManager discountManager;
-	Discount discount;
+
 	
 	
 	
 	
-	public AddDiscountDialog(DiscountManager discountManager) throws IOException {
-		super ( null, "Add Discount");
-        this.discountManager = discountManager;
+
+	public AddDiscountDialog(DiscountPanel discountPanel,
+			StoreApplication manager) {
+		super(null,"Add Discount");
+		this.discountPanel = discountPanel;
+		this.manager = manager;
+		// TODO Auto-generated constructor stub
 	}
 	/**
 	 * 
@@ -247,7 +251,7 @@ public class AddDiscountDialog extends OkCancelDialog {
 	        	
 	            return valid;
 	        
-	        discount=new Discount();
+	        Discount discount=new Discount();
 	        discount.setDiscountCode(discountCode);
 	        discount.setDiscountDescription(discountDescription);
 	        discount.setStartDate(discountStartDate);
@@ -257,12 +261,12 @@ public class AddDiscountDialog extends OkCancelDialog {
 
 			try {
 
-				 valid=discountManager.addNewDiscountData(discount);
+				 valid=manager.getDiscountManager().addNewDiscountData(discount);
 				
 				if(valid){
 					JOptionPane.showMessageDialog(null,"Addition new data is successful");
 				}
-				discountManager.refresh();
+				discountPanel.refreshDiscountPanel();
 				//new ProductPanel(manager);
 			} catch (NumberFormatException | IOException e) {
 							e.printStackTrace();

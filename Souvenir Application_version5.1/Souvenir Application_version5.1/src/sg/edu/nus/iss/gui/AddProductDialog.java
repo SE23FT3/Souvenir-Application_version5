@@ -1,4 +1,4 @@
- package sg.edu.nus.iss.gui;
+package sg.edu.nus.iss.gui;
 
 import java.awt.GridLayout;
 import java.io.IOException;
@@ -20,12 +20,18 @@ import sg.edu.nus.iss.util.OkCancelDialog;
 
 import javax.swing.JComboBox;
 
-public class AddProductDialog extends OkCancelDialog{
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.Color;
+
+public class AddProductDialog extends OkCancelDialog implements KeyListener{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5641760134521542673L;
-	private ProductManager productManager;
+	private StoreApplication manager;
+	private ProductPanel productPanel;
 	private JTextField productIdField;
 	private JTextField productNameField;
 	private JTextField productDescriptionField;
@@ -35,15 +41,14 @@ public class AddProductDialog extends OkCancelDialog{
 	private JTextField reorderThresholdField;
 	private JTextField orderQuantityField;
 	private JComboBox comboBox;
-	private CategoryManager categoryManager;
 	private List<Category> categoryList;
+	private JLabel lblMessage;
 
 	
-	public AddProductDialog(ProductManager productManager) {
-		
+	public AddProductDialog(ProductPanel productPanel,StoreApplication manager) {
         super ( null, "Add Product");
-        this.productManager= productManager;
-		categoryManager = new CategoryManager();
+        this.manager= manager;	
+        this.productPanel = productPanel;
 
 
 	}
@@ -51,7 +56,6 @@ public class AddProductDialog extends OkCancelDialog{
 	@Override
 	public JPanel createFormPanel()  {
 		JPanel p = new JPanel();
-		categoryManager = new CategoryManager();
 		p.setLayout(new GridLayout(0,2));
 		p.add(new JLabel("CategoryCode"));
 		final DefaultComboBoxModel productCodeName = new DefaultComboBoxModel();
@@ -61,7 +65,7 @@ public class AddProductDialog extends OkCancelDialog{
   		categoryList = null;
 		
 		try {
-			categoryList = categoryManager.retrieveCategoryDataFromFile();
+			categoryList = manager.getCategoryManager().retrieveCategoryDataFromFile();
 			Iterator<Category> iterator = categoryList.iterator();
 			String categoryDesc=null;
 				while (iterator.hasNext()) {							
@@ -84,25 +88,36 @@ public class AddProductDialog extends OkCancelDialog{
 		p.add(comboBox);
 		p.add(new JLabel("Product Name"));
 		productNameField = new JTextField(20);
+		productNameField.addKeyListener(this);
 		p.add(productNameField);
 		p.add(new JLabel("Product Description"));
 		productDescriptionField = new JTextField(20);
+		productDescriptionField.addKeyListener(this);
 		p.add(productDescriptionField);
 		p.add(new JLabel("Product Quantity"));
 		quantityAvaliableField = new JTextField(20);
+		quantityAvaliableField.addKeyListener(this);
 		p.add(quantityAvaliableField);
 		p.add(new JLabel("Product Price"));
 		productPriceField = new JTextField(20);
+		productPriceField.addKeyListener(this);
 		p.add(productPriceField);
 		p.add(new JLabel("Bar Code"));
 		barCodeField = new JTextField(20);
+		barCodeField.addKeyListener(this);
 		p.add(barCodeField);
 		p.add(new JLabel("Reorder Threshold"));
 		reorderThresholdField = new JTextField(20);
+		reorderThresholdField.addKeyListener(this);
 		p.add(reorderThresholdField);
 		p.add(new JLabel("Order Quantity"));
 		orderQuantityField = new JTextField(20);
+		orderQuantityField.addKeyListener(this);
 		p.add(orderQuantityField);
+		
+		lblMessage = new JLabel();
+		lblMessage.setForeground(Color.RED);
+		p.add(lblMessage);
 		return p;
 	}
 
@@ -130,19 +145,118 @@ public class AddProductDialog extends OkCancelDialog{
 //			manager.addProduct(productId,productName,productDescription,
 //					Integer.parseInt(quantityAvaliable),Float.parseFloat(productPrice),Integer.parseInt(barCode),
 //					Integer.parseInt(reorderThreshold),Integer.parseInt(orderQuantity));
-			boolean valid=productManager.addProduct(productId,productName,productDescription,
+			boolean valid=manager.getProductManager().addProduct(productId,productName,productDescription,
 					Integer.parseInt(quantityAvaliable),Float.parseFloat(productPrice),Integer.parseInt(barCode),
 					Integer.parseInt(reorderThreshold),Integer.parseInt(orderQuantity));
 			if(valid){
 				JOptionPane.showMessageDialog(null,"Addition new data is successful");
 			}
-			productManager.refresh();
+			//manager.getProductManager().refresh();
+//			productPanel.getTableModel().addRow(new Object[]{productId,productName,productDescription,productPrice,quantityAvaliable,
+//					barCode,reorderThreshold,orderQuantity});
+//			productPanel.getTableModel().addRow(new Object[]{"1","2"});
+//			System.out.println("1");
+			productPanel.refreshProductPanel();
 
 		} catch (NumberFormatException | IOException e) {
 						e.printStackTrace();
 		}
 
         return true;
+	}
+	
+	@Override
+	public void keyTyped(KeyEvent e) {
+		if(e.getSource()==productNameField){
+	    	lblMessage.setText("");
+
+			if(!Character.isLetter(e.getKeyChar()))
+	    	{
+	    	e.consume();
+	    	lblMessage.setText("Only char allowed");
+	    	}
+		}
+		if(e.getSource()==productDescriptionField){
+	    	lblMessage.setText("");
+
+			if(!Character.isLetter(e.getKeyChar()))
+	    	{
+	    	e.consume();
+	    	lblMessage.setText("Only char allowed");
+	    	}
+		}
+		if(e.getSource()==quantityAvaliableField){
+	    	lblMessage.setText("");
+
+            int keyChar = e.getKeyChar();                 
+            if(keyChar >= KeyEvent.VK_0 && keyChar <= KeyEvent.VK_9){  
+                  
+            }else{  
+                e.consume(); //关键，屏蔽掉非法输入 
+    	    	lblMessage.setText("Only number allowed");
+            }  
+		}
+		if(e.getSource()==productPriceField){
+	    	lblMessage.setText("");
+
+            int keyChar = e.getKeyChar();                 
+            if((keyChar >= KeyEvent.VK_0 && keyChar <= KeyEvent.VK_9) ||(keyChar==KeyEvent.VK_PERIOD)){  
+                  
+            }else{  
+                e.consume(); //关键，屏蔽掉非法输入  
+    	    	lblMessage.setText("Only char allowed");
+
+            }  
+		}
+		if(e.getSource()==barCodeField){
+	    	lblMessage.setText("");
+
+            int keyChar = e.getKeyChar();                 
+            if(keyChar >= KeyEvent.VK_0 && keyChar <= KeyEvent.VK_9){  
+                  
+            }else{  
+                e.consume(); //关键，屏蔽掉非法输入  
+    	    	lblMessage.setText("Only char allowed");
+
+            }  
+		}
+		if(e.getSource()==reorderThresholdField){
+	    	lblMessage.setText("");
+
+            int keyChar = e.getKeyChar();                 
+            if(keyChar >= KeyEvent.VK_0 && keyChar <= KeyEvent.VK_9){  
+                  
+            }else{  
+                e.consume(); //关键，屏蔽掉非法输入  
+    	    	lblMessage.setText("Only char allowed");
+
+            }  
+		}
+		if(e.getSource()==orderQuantityField){
+	    	lblMessage.setText("");
+
+            int keyChar = e.getKeyChar();                 
+            if(keyChar >= KeyEvent.VK_0 && keyChar <= KeyEvent.VK_9){  
+                  
+            }else{  
+                e.consume(); //关键，屏蔽掉非法输入
+    	    	lblMessage.setText("Only char allowed");
+
+            }
+		}
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
         
 	

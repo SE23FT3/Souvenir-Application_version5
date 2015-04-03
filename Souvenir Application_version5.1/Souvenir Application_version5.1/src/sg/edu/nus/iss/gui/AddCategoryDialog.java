@@ -16,13 +16,14 @@ import sg.edu.nus.iss.util.OkCancelDialog;
 
 public class AddCategoryDialog extends OkCancelDialog {
 
-	private CategoryManager categoryManager;
 	private JTextField categoryCodeField;
 	private JTextField categoryNameField;
-	Category  category;
-	public AddCategoryDialog(CategoryManager categoryManager) throws IOException {
+	private StoreApplication manager;
+	private CategoryPanel categoryPanel;
+	public AddCategoryDialog(CategoryPanel categoryPanel,StoreApplication manager) throws IOException {
 		super(null,"Add Category");
-		this.categoryManager = categoryManager;
+		this.categoryPanel = categoryPanel;
+		this.manager = manager;
 	}
 
 
@@ -65,18 +66,18 @@ public class AddCategoryDialog extends OkCancelDialog {
 			}
 			else{
 
-				category=new Category();
+				Category category=new Category();
 				category.setCategoryCode(categoryCode);
 				category.setCategoryName(categoryName);
 				boolean valid = false;
 				try {
-					valid = categoryManager.addNewCategory(category);
+					valid = manager.getCategoryManager().addNewCategory(category);
 					if(valid){
 						JOptionPane.showMessageDialog(null,"Addition new data is successful");
 					}
 
 
-					categoryManager.refresh();
+					categoryPanel.refreshCategoryPanel();
 
 				} catch (IOException e) {
 					// TODO Auto-generated catch block

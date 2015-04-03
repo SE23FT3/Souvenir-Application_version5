@@ -32,18 +32,18 @@ import sg.edu.nus.iss.models.Vendor;
 import sg.edu.nus.iss.service.CategoryManager;
 import sg.edu.nus.iss.service.VendorManager;
 
-public class VendorPanel extends JPanel {
+public class VendorPanel extends JPanel implements ActionListener{
 
-
+	private StoreApplication manager;
 	private JScrollPane scrollPane;
 	private DefaultTableModel tableModel;
-	private VendorManager vendorManager;
 	private JTable vendorTable;
-	private CategoryManager categoryManager;
+	private MainMenu mainMenu;
+	private JButton btnAdd;
 
-	public VendorPanel(VendorManager vendorManager) throws IOException{
-		this.vendorManager = vendorManager;
-		categoryManager = new CategoryManager();
+	public VendorPanel(MainMenu mainMenu, StoreApplication manager) throws IOException{
+		this.mainMenu = mainMenu;
+		this.manager = manager;
 		vendorTable = new JTable();
 		scrollPane = new JScrollPane(vendorTable);
 		tableModel=new DefaultTableModel(0,2);
@@ -70,7 +70,7 @@ public class VendorPanel extends JPanel {
 	  		List<String> categoryNameList=new ArrayList<String>();
 	  		List<Category> categoryList;
 			try {
-				categoryList = categoryManager.retrieveCategoryDataFromFile();
+				categoryList = manager.getCategoryManager().retrieveCategoryDataFromFile();
 				Iterator<Category> iterator = categoryList.iterator();
 				String categoryDesc=null;
 					while (iterator.hasNext()) {							
@@ -115,7 +115,7 @@ public class VendorPanel extends JPanel {
 	                    String  categoryCode=null;
 	                     ArrayList<Category> categoryList;
 						try {
-							categoryList = categoryManager.retrieveCategoryDataFromFile();
+							categoryList = manager.getCategoryManager().retrieveCategoryDataFromFile();
 							Iterator<Category> iterator = categoryList.iterator();
 		     				while (iterator.hasNext()) {							
 		     					Category cat=iterator.next();
@@ -125,7 +125,7 @@ public class VendorPanel extends JPanel {
 		     						String fileName="data/Vendors"+categoryCode+".dat";
 		     						
 		     						System.out.println("fileName"+fileName);
-		     						ArrayList<Vendor> vendorList=vendorManager.retrieveVendorDataFromFile( fileName);
+		     						ArrayList<Vendor> vendorList=manager.getVendorManager().retrieveVendorDataFromFile( fileName);
 		     						System.out.println("vendorList"+vendorList.size());
 		     						addComponeneTable(vendorList);
 		     					}
@@ -160,7 +160,7 @@ public class VendorPanel extends JPanel {
 	                    	 System.out.println("data in combobox ::"+data+" value:"+searchField.getText());
 	                    
 	                    	 String value=searchField.getText();
-	                    	 vendorManager.searchDataAndDisplay(data,value);
+	                    	 manager.getVendorManager().searchDataAndDisplay(data,value);
 	                     }
 	                    
 	                  } 
@@ -193,24 +193,9 @@ public class VendorPanel extends JPanel {
 
 	private JPanel createButtonPanel() {
 		JPanel p = new JPanel(new GridLayout(0,1));
-		JButton b = new JButton("Add");
-		b.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				AddVendorDialog d;
-				try {
-					d = new AddVendorDialog (vendorManager);
-					d.pack();
-					d.setVisible (true);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-			}
-
-
-		});
-        p.add (b);
+		btnAdd = new JButton("Add");
+		btnAdd.addActionListener(this);
+        p.add (btnAdd);
         JPanel bp = new JPanel();
         bp.setLayout(new BorderLayout());
         bp.add("North",p);
@@ -242,10 +227,7 @@ public class VendorPanel extends JPanel {
 	protected void dispose() {
 		this.setVisible(false);		
 	}
-	public void refresh() {
-		// TODO Auto-generated method stub
-		
-	}
+
 	
 	void addComponeneTable(List<Vendor> vendorList) {
 
@@ -274,5 +256,19 @@ public class VendorPanel extends JPanel {
 //		// TODO Auto-generated method stub
 //		
 //	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==btnAdd){
+		AddVendorDialog d;
+		d = new AddVendorDialog (this,manager);
+		d.pack();
+		d.setVisible (true);
+		}
+	}
+
+	public void refreshVendorPanel() {
+		mainMenu.refreshVendorPanel();
+	}
 
 }
