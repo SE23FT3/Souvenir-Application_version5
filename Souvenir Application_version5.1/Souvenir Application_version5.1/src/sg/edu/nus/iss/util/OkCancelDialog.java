@@ -9,13 +9,13 @@ import javax.swing.*;
 
 public abstract class OkCancelDialog extends JDialog {
 
-    public OkCancelDialog (JFrame parent, String title) {
+    public OkCancelDialog (JFrame parent, String title){
         super (parent, title);
         add ("Center", createFormPanel());
         add ("South",  createButtonPanel());
     }
 
-    public OkCancelDialog (JFrame parent) {
+    public OkCancelDialog (JFrame parent) throws IOException {
         this (parent, "");
     }
 
@@ -60,7 +60,7 @@ public abstract class OkCancelDialog extends JDialog {
         dispose();
     }
 
-    protected abstract JPanel createFormPanel () ;
+    protected abstract JPanel createFormPanel ()  ;
 
     protected abstract boolean performOkAction () throws IOException ;
 

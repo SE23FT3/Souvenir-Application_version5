@@ -125,7 +125,7 @@ public class BillingPanel extends JPanel{
     	
     	panel = new JPanel();
     	add(panel, BorderLayout.CENTER);
-    	panel.setLayout(new MigLayout("", "[103.00][90.00][109.00][71.00][506.00][113.00][94.00][65.00][][-14.00][27.00]", "[20.00][][][21.00][21.00][13.00][28.00][65.00][24.00][28.00][30.00][30.00][][]"));
+    	panel.setLayout(new MigLayout("", "[103.00][90.00][109.00][71.00][8.00][113.00][94.00][65.00][][-14.00][27.00]", "[20.00][][][21.00][21.00][13.00][28.00][65.00][24.00][28.00][30.00][30.00][][]"));
     	
     	rdbtnMember = new JRadioButton("Member");
     	rdbtnMember.addActionListener(new ActionListener() {
@@ -233,7 +233,7 @@ public class BillingPanel extends JPanel{
     	JLabel lblProductQuantity = new JLabel("Product Quantity");
     	panel.add(lblProductQuantity, "cell 2 4,alignx trailing");
     	
-    	txtQuantity = new JTextField();
+    	txtQuantity = new JTextField(10);
     	txtQuantity.setText("");
     	panel.add(txtQuantity, "cell 3 4,growx");
     	txtQuantity.setColumns(10);

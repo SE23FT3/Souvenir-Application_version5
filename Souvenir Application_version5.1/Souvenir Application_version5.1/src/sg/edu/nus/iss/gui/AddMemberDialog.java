@@ -26,9 +26,10 @@ public class AddMemberDialog extends OkCancelDialog{
     Member	member=null;
 	/**
 	 * Created by Deepsha on 24March 2015
+	 * @throws IOException 
 	 */
 
-	public AddMemberDialog(CustomerManager customerManager) {
+	public AddMemberDialog(CustomerManager customerManager) throws IOException {
 		super ( null, "Add Member");
         this.customerManager = customerManager;
 	}

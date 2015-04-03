@@ -158,6 +158,9 @@ public class LoginPanel extends JFrame
 				if(loginUser.changePassword(uname,oldpwd, newpwd)){
 					changePasswordFrame.dispose();
 				}
+				else{
+					JOptionPane.showMessageDialog(null, "There is somthing wrong");
+				}
 			}
 		});
 		JButton button2= new JButton("Cancel change password and return");

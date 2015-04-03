@@ -2,15 +2,23 @@
 
 import java.awt.GridLayout;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import sg.edu.nus.iss.main.StoreApplication;
+import sg.edu.nus.iss.models.Category;
+import sg.edu.nus.iss.service.CategoryManager;
 import sg.edu.nus.iss.service.ProductManager;
 import sg.edu.nus.iss.util.OkCancelDialog;
+
+import javax.swing.JComboBox;
 
 public class AddProductDialog extends OkCancelDialog{
 	/**
@@ -26,20 +34,54 @@ public class AddProductDialog extends OkCancelDialog{
 	private JTextField barCodeField;
 	private JTextField reorderThresholdField;
 	private JTextField orderQuantityField;
+	private JComboBox comboBox;
+	private CategoryManager categoryManager;
+	private List<Category> categoryList;
+
 	
-	public AddProductDialog(ProductManager productManager) throws IOException{
+	public AddProductDialog(ProductManager productManager) {
 		
         super ( null, "Add Product");
         this.productManager= productManager;
+		categoryManager = new CategoryManager();
+
+
 	}
 
 	@Override
-	protected JPanel createFormPanel() {
+	public JPanel createFormPanel()  {
 		JPanel p = new JPanel();
+		categoryManager = new CategoryManager();
 		p.setLayout(new GridLayout(0,2));
 		p.add(new JLabel("CategoryCode"));
-		productIdField = new JTextField(20);
-		p.add(productIdField);
+		final DefaultComboBoxModel productCodeName = new DefaultComboBoxModel();
+
+		
+  		List<String> productCodeNameList=new ArrayList<String>();
+  		categoryList = null;
+		
+		try {
+			categoryList = categoryManager.retrieveCategoryDataFromFile();
+			Iterator<Category> iterator = categoryList.iterator();
+			String categoryDesc=null;
+				while (iterator.hasNext()) {							
+					Category cat=iterator.next();
+					categoryDesc=cat.getCategoryCode();
+					productCodeNameList.add(categoryDesc);
+				}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+			System.out.println("categoryNameList"+productCodeNameList.size());
+  		for(String s : productCodeNameList)
+  		{
+  			productCodeName.addElement	(s);
+  		}
+		comboBox = new JComboBox(productCodeName);
+		p.add(comboBox);
 		p.add(new JLabel("Product Name"));
 		productNameField = new JTextField(20);
 		p.add(productNameField);
@@ -66,7 +108,7 @@ public class AddProductDialog extends OkCancelDialog{
 
 	@Override
 	protected boolean performOkAction() throws IOException {
-        String productId = productIdField.getText();
+        String productId = comboBox.getSelectedItem().toString();
         String productName = productNameField.getText();
         String productDescription = productDescriptionField.getText();
         String productPrice = productPriceField.getText();

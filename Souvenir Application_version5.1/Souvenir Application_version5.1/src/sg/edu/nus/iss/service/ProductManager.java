@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 import sg.edu.nus.iss.gui.MainMenu;
 import sg.edu.nus.iss.gui.ProductPanel;
 import sg.edu.nus.iss.main.StoreApplication;
+import sg.edu.nus.iss.models.Category;
 import sg.edu.nus.iss.models.Product;
 import sg.edu.nus.iss.util.Constants;
 
@@ -319,6 +320,9 @@ public class ProductManager  {
 			bout.close();						
 		}
 		return productList;
+	}
+	public List<Category> retrieveCategoryDataFromFile() throws IOException {
+		return mainMenu.retriveCategoryDataFromFIle();
 	}
 
 }

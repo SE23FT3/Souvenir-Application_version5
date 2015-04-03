@@ -20,7 +20,7 @@ public class AddCategoryDialog extends OkCancelDialog {
 	private JTextField categoryCodeField;
 	private JTextField categoryNameField;
 	Category  category;
-	public AddCategoryDialog(CategoryManager categoryManager) {
+	public AddCategoryDialog(CategoryManager categoryManager) throws IOException {
 		super(null,"Add Category");
 		this.categoryManager = categoryManager;
 	}

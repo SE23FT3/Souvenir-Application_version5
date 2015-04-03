@@ -174,9 +174,15 @@ public class MemberPanel extends JPanel{
         addButton.addActionListener (new ActionListener () {
             public void actionPerformed (ActionEvent e) {
                 AddMemberDialog d;
-				d = new AddMemberDialog (customerManager);
-				d.pack();
-				d.setVisible (true);
+				try {
+					d = new AddMemberDialog (customerManager);
+					d.pack();
+					d.setVisible (true);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 
             }
         });
