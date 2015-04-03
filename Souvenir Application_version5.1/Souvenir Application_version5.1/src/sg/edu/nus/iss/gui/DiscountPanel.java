@@ -167,9 +167,15 @@ public class DiscountPanel extends JPanel {
         b.addActionListener (new ActionListener () {
             public void actionPerformed (ActionEvent e) {
                 AddDiscountDialog d;
-				d = new  AddDiscountDialog (discountManager);
-				d.pack();
-				d.setVisible (true);
+				try {
+					d = new  AddDiscountDialog (discountManager);
+					d.pack();
+					d.setVisible (true);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 
             }
         });

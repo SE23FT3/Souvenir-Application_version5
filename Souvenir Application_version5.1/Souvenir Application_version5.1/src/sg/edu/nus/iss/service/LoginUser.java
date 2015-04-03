@@ -120,7 +120,8 @@ public class LoginUser
 							fw.write(line.replace(part2, newpwd));
 							fw.close();
 							JOptionPane.showMessageDialog(null, "Change password successfully!");
-							result = true;}
+							result = true;
+							break;}
 							else{
 								JOptionPane.showMessageDialog(null, "New password can not be empty!");
 							}

@@ -174,14 +174,9 @@ public class ProductPanel extends JPanel{
         b.addActionListener (new ActionListener () {
             public void actionPerformed (ActionEvent e) {
                 AddProductDialog d;
-				try {
-					d = new AddProductDialog (productManager);
-	                d.pack();
-	                d.setVisible (true);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				d = new AddProductDialog (productManager);
+				d.pack();
+				d.setVisible (true);
 
             }
         });

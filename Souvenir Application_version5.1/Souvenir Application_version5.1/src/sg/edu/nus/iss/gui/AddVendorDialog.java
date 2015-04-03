@@ -18,7 +18,7 @@ public class AddVendorDialog extends OkCancelDialog {
 	private JTextField vendorNameField;
 	private JTextField vendorDescriptionField;
 
-	public AddVendorDialog(VendorManager vendorManager) {
+	public AddVendorDialog(VendorManager vendorManager) throws IOException {
 		super(null,"Add Vendor");
 		this.vendorManager=vendorManager;
 	}

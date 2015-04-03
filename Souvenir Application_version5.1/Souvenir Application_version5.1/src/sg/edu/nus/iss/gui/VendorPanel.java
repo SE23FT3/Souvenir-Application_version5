@@ -41,7 +41,7 @@ public class VendorPanel extends JPanel {
 	private JTable vendorTable;
 	private CategoryManager categoryManager;
 
-	public VendorPanel(VendorManager vendorManager)throws IOException{
+	public VendorPanel(VendorManager vendorManager) throws IOException{
 		this.vendorManager = vendorManager;
 		categoryManager = new CategoryManager();
 		vendorTable = new JTable();
@@ -197,9 +197,15 @@ public class VendorPanel extends JPanel {
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				AddVendorDialog d;
-				d = new AddVendorDialog (vendorManager);
-				d.pack();
-				d.setVisible (true);
+				try {
+					d = new AddVendorDialog (vendorManager);
+					d.pack();
+					d.setVisible (true);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 			}
 
 

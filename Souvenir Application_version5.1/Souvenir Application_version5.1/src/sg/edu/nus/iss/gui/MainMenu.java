@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Timer;
 import java.util.zip.*;
 
@@ -29,6 +30,7 @@ import javax.swing.JButton;
 import javax.swing.text.Document;
 
 import sg.edu.nus.iss.main.StoreApplication;
+import sg.edu.nus.iss.models.Category;
 import sg.edu.nus.iss.report.WriteCategoryExcelFile;
 import sg.edu.nus.iss.report.WriteMemberExcelFile;
 import sg.edu.nus.iss.report.WriteProductExcelFile;
@@ -55,6 +57,7 @@ import java.awt.CardLayout;
 import java.io.IOException;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.SwingConstants;
 
 
@@ -564,6 +567,9 @@ public class MainMenu extends JFrame implements ActionListener {
 			    }
 		
 		}
+	public List<Category> retriveCategoryDataFromFIle() throws IOException {
+		return categoryManager.retrieveCategoryDataFromFile();		
+	}
 
 
 	}

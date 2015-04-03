@@ -181,9 +181,15 @@ public class CategoryPanel extends JPanel {
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				AddCategoryDialog d;
-				d = new AddCategoryDialog (categoryManager);
-				d.pack();
-				d.setVisible (true);
+				try {
+					d = new AddCategoryDialog (categoryManager);
+					d.pack();
+					d.setVisible (true);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 			}
 		});
         p.add (b);
