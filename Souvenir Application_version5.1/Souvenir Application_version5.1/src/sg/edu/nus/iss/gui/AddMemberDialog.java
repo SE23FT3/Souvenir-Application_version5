@@ -25,7 +25,7 @@ public class AddMemberDialog extends OkCancelDialog{
 	private JTextField memberLoyaltyPointField;
     Member	member=null;
 	/**
-	 * Createdt by Deepsha on 24March 2015
+	 * Created by Deepsha on 24March 2015
 	 */
 
 	public AddMemberDialog(CustomerManager customerManager) {
@@ -43,17 +43,17 @@ public class AddMemberDialog extends OkCancelDialog{
 		p.add(new JLabel("Member Name"));
 		memberNameField = new JTextField(20);
 		p.add(memberNameField);
-		p.add(new JLabel("Member ID"));
+		p.add(new JLabel("Card ID"));
 		memberIDField = new JTextField(20);
-		String memberIdentity=createUniqueMemebrId();
-		System.out.println("memberIdentity:"+memberIdentity);
-		memberIDField.setText(memberIdentity);
-		memberIDField.setEditable(false);
+		//String memberIdentity=createUniqueMemebrId();
+		//System.out.println("memberIdentity:"+memberIdentity);
+		//memberIDField.setText(memberIdentity);
+		//memberIDField.setEditable(false);
 		p.add(memberIDField);
 		p.add(new JLabel("Loyalty Points"));
 		memberLoyaltyPointField = new JTextField(20);
 		memberLoyaltyPointField.setText("-1");
-		memberIDField.setEditable(false);
+		//memberIDField.setEditable(false);
 		p.add(memberLoyaltyPointField);
 		return p;
 		
@@ -97,8 +97,19 @@ public class AddMemberDialog extends OkCancelDialog{
 					JOptionPane.showMessageDialog(null,"Fields for addition of new  entry are empty.");
 					return valid;
 				}
+	        
 		
 	        else{
+	        	if(memberName.matches(".*\\d.*")){
+	        		JOptionPane.showMessageDialog(null,"Fields for name should not contain integer.");
+	        		return valid;
+	        	} 
+	        	else if(!(memberLoyaltyPoint.matches("[0-9]+") || (memberLoyaltyPoint.equals("-1"))) ){
+	        		JOptionPane.showMessageDialog(null,"Loyalty Point cannot contain  alphabets.");
+	        		return valid;
+	        	} 
+	 
+	        	else{
 	        	member=new Member();
 	        	member.setCustomerName(memberName);
 	        	member.setMemberId(memberID);
@@ -120,6 +131,7 @@ public class AddMemberDialog extends OkCancelDialog{
 
 
 	        return true;
+	        }
 	        }
 	}
 

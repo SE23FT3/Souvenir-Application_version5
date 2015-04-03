@@ -25,7 +25,7 @@ public class WriteProductExcelFile
 	{
 		FileOutputStream fileOut = null;
 		try {
-			fileOut = new FileOutputStream("E://product1.xls");
+			fileOut = new FileOutputStream("D://product1.xls");
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
