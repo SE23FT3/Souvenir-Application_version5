@@ -150,33 +150,33 @@ public class LoginUser
 		return result;
 		
 	}
-	public void addUser(String uname, String rand) 
-	{
-		FileWriter fw = null;
-		try
-		{
-			String data=uname+","+rand;
-			fw=new FileWriter("./data/Storekeepers.dat",true);
-			bw=new BufferedWriter(fw);
-			bw.newLine();
-			bw.write(data);
-			bw.close();
-		} 
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			try 
-			{
-				fw.close();
-			}
-			catch (IOException e)
-			{			
-				e.printStackTrace();
-			}
-		}
-	}
+//	public void addUser(String uname, String rand) 
+//	{
+//		FileWriter fw = null;
+//		try
+//		{
+//			String data=uname+","+rand;
+//			fw=new FileWriter("./data/Storekeepers.dat",true);
+//			bw=new BufferedWriter(fw);
+//			bw.newLine();
+//			bw.write(data);
+//			bw.close();
+//		} 
+//		catch (IOException e)
+//		{
+//			e.printStackTrace();
+//		}
+//		finally
+//		{
+//			try 
+//			{
+//				fw.close();
+//			}
+//			catch (IOException e)
+//			{			
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 
 }
