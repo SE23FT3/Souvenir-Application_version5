@@ -34,13 +34,13 @@ public class LoginUser
 	private String line;
 	private String replacement;
 	private String part2;
-	private StoreManager manager;
+	private StoreApplication manager;
 	private MainMenu mainMenu;
 	private int j;
 	private ArrayList<StoreKeeper> storeKeeperList;
 	private LoginPanel loginPanel;
 	
-	public LoginUser(StoreManager manager) throws IOException{
+	public LoginUser(StoreApplication manager) throws IOException{
 		this.manager = manager;
 		storeKeeperList=retrieveStoreKeeperDataFromFile();
 		System.out.print(retrieveStoreKeeperDataFromFile());
